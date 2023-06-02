@@ -1,6 +1,6 @@
 ## 简单的摄像头循迹小车
 
-开发板型号为：CH32V307
+开发板型号为：CH32V307 risc-v指令集
 
 使用Mounriver ide管理此项目，双击src/MounRiver/car_23.wvproj打开项目
 
