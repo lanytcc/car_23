@@ -13,7 +13,6 @@ void car_move(int8_t f){
     if(right_speed < 0){
         right_speed = 0;
     }
-    motor_forward(left, left_speed);
-    motor_back(right, right_speed);
-
+    motor_back(left, left_speed);
+    motor_forward(right, right_speed);
 }
