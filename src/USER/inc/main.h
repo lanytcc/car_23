@@ -6,17 +6,9 @@
 ********************************************************************************************************************/
 #ifndef MAIN_H_
 #define MAIN_H_
+#include "common.h"
 
-#include "headfile.h"
-#include "isr.h"
-
-/* 宏定义 */
-
-
-
-/* 变量定义 */
-
-
-/* 函数声明 */
+extern uint8_t display_status;
+extern uint8_t frame_dis_status;
 
 #endif /* MAIN_H_ */
