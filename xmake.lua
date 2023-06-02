@@ -2,9 +2,6 @@
 
 
 --此文件仅用于生成complie_commands
-
-includes("Libraries/xmake.lua")
-    
 --[[
 toolchain("riscv-none-embed")
     set_kind("standalone")
@@ -35,8 +32,9 @@ toolchain_end()--]]
 target("car_23")
     set_kind("binary")
     add_includedirs("Libraries/hefei_libraries", "./src/USER/inc"
-        , "./src/CODE")
-    add_files("./src/**.c")
+        , "./src/CODE", "Libraries/Device/Core", "Libraries/hefei_libraries/board"
+        , "Libraries/hefei_peripheral")
+    add_files("./**.c")
     after_build(function (target)
         os.mv("startfiles", "10-Car_CAM_uart_PC.elf")
     end)
