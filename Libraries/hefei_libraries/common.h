@@ -22,7 +22,7 @@ typedef unsigned short int  uint16;  // 16 bits
 typedef unsigned long int   uint32;  // 32 bits
 typedef unsigned long long  uint64;  // 64 bits
 
-typedef uint32  u32;
+//typedef uint32  u32;
 typedef uint16 u16;
 typedef uint8  u8;
 typedef uint64 u64;
