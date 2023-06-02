@@ -33,7 +33,7 @@ target("car_23")
     set_kind("binary")
     add_includedirs("Libraries/hefei_libraries", "./src/USER/inc"
         , "./src/CODE", "Libraries/Device/Core", "Libraries/hefei_libraries/board"
-        , "Libraries/hefei_peripheral")
+        , "Libraries/hefei_peripheral", "Libraries/Device/CH32V30x_p/CH32V30x_Lib")
     add_files("./**.c")
     after_build(function (target)
         os.mv("startfiles", "10-Car_CAM_uart_PC.elf")
