@@ -3,6 +3,8 @@
 #include "message.h"
 
 
+const uint8_t c_w = 188, c_h = 120;
+const uint8_t d_w = 240, d_h = 135;
 enum camera_stauts camera_stauts;
 uint8_t flag = 0;
 uint8_t frame_cnt = 0;

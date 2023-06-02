@@ -2,8 +2,8 @@
 #define CAMERA_H_
 #include "common.h"
 
-const uint8_t c_w = 188, c_h = 120;
-const uint8_t d_w = 240, d_h = 135;
+extern const uint8_t c_w, c_h;
+extern const uint8_t d_w, d_h;
 
 enum camera_stauts{
     ok,no,
