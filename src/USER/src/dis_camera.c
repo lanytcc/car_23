@@ -11,7 +11,7 @@ uint8_t frame_cnt = 0;
 
 
 void display() {
-    if(camera_stauts == ok){ //鍒ゆ柇鏄惁瀹屾垚閲囨牱
+    if(camera_stauts == ok){ //判断是否完成采样
         ips114_show_gray_image(0, 0,
             mt9v03x_image_dvp,
             c_w, c_h,
