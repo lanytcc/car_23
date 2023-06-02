@@ -6,4 +6,5 @@
 
 Mounriver安装软件下载[链接🔗](http://mounriver.com/)
 
-> xmake.lua文件仅用于生成complie_commands
+> xmake.lua文件仅用于为vscode生成complie_commands
+> 本项目除开src/User/的内容外，使用gbk编码，出现乱码情况请在utf-8和gbk之间切换
