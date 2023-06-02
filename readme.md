@@ -5,3 +5,5 @@
 使用Mounriver ide管理此项目，双击src/MounRiver/car_23.wvproj打开项目
 
 Mounriver安装软件下载[链接🔗](http://mounriver.com/)
+
+> xmake.lua文件仅用于生成complie_commands
