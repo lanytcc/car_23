@@ -1,7 +1,7 @@
 
 #include <stdio.h>
 
-#include "headfile.h"
+#include "HF_Double_DC_Motor.h"
 
 #include "init.h"
 #include "message.h"
@@ -28,6 +28,7 @@ int main() {
 
     while(1) {
 
+
         time_begin();
         ms = get_time();
 
@@ -40,6 +41,7 @@ int main() {
 
         camera_check();
         if(display_status)display();
+        change_flag();
         factor = cal_factor();
         car_move(factor);
         sample();

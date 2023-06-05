@@ -1,6 +1,7 @@
 #include "headfile.h"
 #include "dis_camera.h"
 #include "message.h"
+#include "image_processing.h"
 
 
 const uint8_t c_w = 188, c_h = 120;
@@ -9,6 +10,9 @@ enum camera_stauts camera_stauts;
 uint8_t flag = 0;
 uint8_t frame_cnt = 0;
 
+void change_flag(){
+    flag = getThreshold();
+}
 
 void display() {
     if(camera_stauts == ok){ //判断是否完成采样
