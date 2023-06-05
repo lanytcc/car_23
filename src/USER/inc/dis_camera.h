@@ -15,6 +15,8 @@ extern uint8_t white_value_status;
 extern uint8_t flag;
 extern uint8_t frame_cnt;
 
+void change_flag();
+
 void display();
 
 int frame_avg();
