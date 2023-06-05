@@ -2,7 +2,6 @@
 #include "dis_camera.h"
 #include "message.h"
 #include "image_processing.h"
-#include "time.h"
 
 
 const uint8_t c_w = 188, c_h = 120;
