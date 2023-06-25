@@ -2,6 +2,7 @@
 #include "key_fn.h"
 #include "message.h"
 #include "dis_camera.h"
+#include "image_processing.h"
 #include "main.h"
 
 void key_fn(unsigned char key_value){
@@ -21,22 +22,17 @@ void key_fn(unsigned char key_value){
             } else if (key_value == 0x04) {
                 if (display_status) {
                     display_status = 0;
-                    show_left_top_message("display_status: off");
-                }
-                else {
-                    display_status = 1;
-                    show_left_top_message("display_status: on ");
-                }
-            } else if (key_value == 0x05) {
-                if (frame_dis_status) {
                     frame_dis_status = 0;
+                    show_left_top_message("display_status: off");
                     show_left_top_message("frame_dis_status: off");
                 }
                 else {
+                    display_status = 1;
                     frame_dis_status = 1;
+                    show_left_top_message("display_status: on ");
                     show_left_top_message("frame_dis_status: on ");
                 }
-            } else if (key_value == 0x06) {
+            } else if (key_value == 0x05) {
                 if (white_value_status) {
                     white_value_status = 0;
                     show_left_top_message("white_value_status: off");
@@ -44,6 +40,15 @@ void key_fn(unsigned char key_value){
                 else {
                     white_value_status = 1;
                     show_left_top_message("white_value_status: on ");
+                }
+            } else if (key_value == 0x06) {
+                if (flag_show_status) {
+                    flag_show_status = 0;
+                    show_left_top_message("flag_show_status: off ");
+                }
+                else {
+                    flag_show_status = 1;
+                    show_left_top_message("flag_show_status: on ");
                 }
             }
             key_value = key_check();

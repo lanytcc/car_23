@@ -2,51 +2,90 @@
 
 #include "image_processing.h"
 
-#include "headfile.h"
+#include "dis_camera.h"
+#include "message.h"
+#include "HF_Double_DC_Motor.h"
+#include <stdint.h>
 
-uint8_t getThreshold() {
-    uint32_t t_u16i, t_u16j;
+/**
+args:
 
-    /*灰度直方图参数*/
-    uint32_t t_u16HistoGramAr[16];
+histogram：长度为256的整型数组，表示图像中0~255出现的像素值的个数。
 
-    uint32_t t_u32Amount = 135*240;//像素点总数
-    uint32_t t_u32PixelIntegral = 47*30;//灰度值总数
+pixel_total：整型变量，表示图像中像素的总数。
 
-    uint32_t t_u32PixelBack = 0;//前景像素点总数
-    uint32_t t_u32PixelIntegralBack = 0;//前景灰度值
+*/
+uint8_t flag_show_status = 0;
+#define  _avg_fre 6
+static uint8_t _threshold_avg[_avg_fre] = {0};
+static uint8_t _pos = 0;
+uint8_t threshold_avg(uint8_t threshold){
+    _threshold_avg[_pos] = threshold;
+    _pos += 1;
+    if (_pos >= _avg_fre)_pos = 0;
+    uint8_t pos = _pos + _avg_fre;
+    uint16_t ans = 0;
+    for (uint8_t i = 1; i <= _avg_fre; ++i) {
+        ans += _threshold_avg[(pos-i)%_avg_fre];
+    }
+    return ans/_avg_fre;
+}
 
-    uint32_t  t_int32PixelFore = 0;//背景像素点总数
-    uint32_t  t_int32PixelIntegralFore = 0;//背景灰度值
+uint8_t otsu_threshold( uint8_t* histogram, int pixel_total ){
+    //用于计算均值
+    unsigned int sumB = 0;
+    unsigned int sum1 = 0;
+    //用于计算类间方差
+    float wB = 0.0f;
+    float wF = 0.0f;
+    float mF = 0.0f;
+    //用于记录最大的类间方差
+    float max_var = 0.0f;
+    //用于计算类间方差
+    float inter_var = 0.0f;
+    //返回值：表示计算得到的阈值
+    uint8_t threshold = 0;
+    //索引buf
+    uint16_t index_histo = 0;
 
-    float   t_floatOmegaBack, t_floatOmegaFore, t_floatMicroBack, t_floatMicroFore, t_floatSigmaB, t_floatSigma; //类间方差：浮点型更精确
+    for ( index_histo = 1; index_histo < 256; ++index_histo ){
+        sum1 += index_histo * histogram[ index_histo ];
+    }
 
-    uint8_t t_u8Threshold = 0;
-
-    for (t_u16j = 0; t_u16j < 16; ++t_u16j) t_u16HistoGramAr[t_u16j] = 0;
-
-    for (t_u16j = 0; t_u16j < 135; t_u16j += 4){
-        for (t_u16i = 0; t_u16i < 240; t_u16i += 4){
-            t_u16HistoGramAr[(uint8_t)mt9v03x_image_dvp[t_u16j][t_u16i] / 16]++; //统计灰度级中每个像素在整幅图像中的个数
-
+    for (index_histo = 1; index_histo < 256; ++index_histo){
+        wB = wB + histogram[ index_histo ];
+        wF = pixel_total - wB;
+        if ( wB == 0 || wF == 0 ){
+            continue;
+        }
+        sumB = sumB + index_histo * histogram[ index_histo ];
+        mF = ( sum1 - sumB ) / wF;
+        inter_var = wB * wF * ( ( sumB / wB ) - mF ) * ( ( sumB / wB ) - mF );
+        if ( inter_var >= max_var ){
+            threshold = index_histo;
+            max_var = inter_var;
         }
     }
 
-    t_floatSigmaB = -1;
-    for (t_u16j = 0; t_u16j < 16; ++t_u16j){
-        t_u32PixelBack += t_u16HistoGramAr[t_u16j];    //前景像素点数
-        t_int32PixelFore = t_u32Amount - t_u32PixelBack;         //背景像素点数
-        t_floatOmegaBack = (float)t_u32PixelBack / t_u32Amount;//前景像素百分比
-        t_floatOmegaFore = (float)t_int32PixelFore / t_u32Amount;//背景像素百分比
-        t_u32PixelIntegralBack += t_u16HistoGramAr[t_u16j] * t_u16j;  //前景灰度值
-        t_int32PixelIntegralFore = t_u32PixelIntegral - t_u32PixelIntegralBack;//背景灰度值
-        t_floatMicroBack = (float)t_u32PixelIntegralBack / t_u32PixelBack;   //前景灰度百分比
-        t_floatMicroFore = (float)t_int32PixelIntegralFore / t_int32PixelFore;   //背景灰度百分比
-        t_floatSigma = t_floatOmegaBack * t_floatOmegaFore * (t_floatMicroBack - t_floatMicroFore) * (t_floatMicroBack - t_floatMicroFore);//计算类间方差
-        if (t_floatSigma > t_floatSigmaB){                    //遍历最大的类间方差g //找出最大类间方差以及对应的阈值
-            t_floatSigmaB = t_floatSigma;
-            t_u8Threshold = (uint8_t)t_u16j;
+    threshold = threshold_avg(threshold);
+
+    if(flag_show_status){
+        sprintf(buf, " %d ", threshold);
+        show_right_bottom_message(buf);
+    }
+    
+    return threshold;
+}
+
+uint8_t get_threshold() {
+    uint8_t histogram[256];
+
+    for (int i = 0; i < c_h; ++i) {
+        uint8_t *one_h = mt9v03x_image_dvp[i];
+        for (int j = 0; j < c_w; ++j) {
+            histogram[one_h[j]]++;
         }
     }
-    return t_u8Threshold;                        //返回最佳阈值;
+
+    return otsu_threshold(histogram, c_h * c_w);
 }

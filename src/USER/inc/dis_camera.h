@@ -19,7 +19,7 @@ void change_flag();
 
 void display();
 
-int frame_avg();
+uint8_t frame_avg();
 
 void camera_check();
 

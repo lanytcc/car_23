@@ -1,4 +1,5 @@
 
+#include <stdint.h>
 #include <stdio.h>
 
 #include "HF_Double_DC_Motor.h"
@@ -20,6 +21,7 @@ int main() {
     unsigned char key_value;
     uint16_t frame = 30;
     uint16_t frame_time = 1000/frame;
+    uint8_t frame_show = 0;
     int ms;
     int ms_new;
     uint16_t s_cnt = 0;
@@ -31,13 +33,12 @@ int main() {
 
         time_begin();
         ms = get_time();
-
-        key_value = key_check();
-
         if(frame_dis_status){
-            sprintf(buf, "%d", frame_avg());
+            sprintf(buf, "%d", frame_show);
             show_left_bottom_message(buf);
         }
+
+        key_value = key_check();
 
         camera_check();
         if(display_status)display();
@@ -55,6 +56,7 @@ int main() {
         }
         s_cnt += t;
         if (s_cnt >= 1000) {
+            frame_show = frame_avg();
             s_cnt = 0;
             frame_cnt = 0;
         }

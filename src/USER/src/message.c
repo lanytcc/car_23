@@ -35,5 +35,5 @@ void show_left_bottom_message(const char *str) {
 }
 
 void show_right_bottom_message(const char *str) {
-    ips114_show_string(231, 118, str);
+    ips114_show_string(128, 118, str);
 }

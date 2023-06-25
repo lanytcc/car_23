@@ -11,11 +11,11 @@ uint8_t flag = 0;
 uint8_t frame_cnt = 0;
 
 void change_flag(){
-    flag = getThreshold();
+    flag = get_threshold();
 }
 
 void display() {
-    if(camera_stauts == ok){ //ÅÐ¶ÏÊÇ·ñÍê³É²ÉÑù
+    if(camera_stauts == ok){ //ï¿½Ð¶ï¿½ï¿½Ç·ï¿½ï¿½ï¿½É²ï¿½ï¿½ï¿½
         ips114_show_gray_image(0, 0,
             mt9v03x_image_dvp,
             c_w, c_h,
@@ -25,17 +25,12 @@ void display() {
     }
 }
 
-uint8_t _frame_avg[6] = {0};
-uint8_t _pos = 0;
-int frame_avg(){
-    if (frame_cnt >= _frame_avg[_pos]){
-        _frame_avg[_pos] = frame_cnt;
-    }
-    else {
-        _pos += 1;
-        if (_pos >= 6)_pos = 0;
-        _frame_avg[_pos] = 0;
-    }
+static uint8_t _frame_avg[6] = {0};
+static uint8_t _pos = 0;
+uint8_t frame_avg(){
+    _frame_avg[_pos] = frame_cnt;
+    _pos += 1;
+    if (_pos >= 6)_pos = 0;
     uint8_t pos = _pos + 6;
     return (_frame_avg[(pos-1)%6] + _frame_avg[(pos-2)%6] + _frame_avg[(pos-3)%6])/3;
 }
