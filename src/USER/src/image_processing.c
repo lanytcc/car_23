@@ -7,14 +7,7 @@
 #include "HF_Double_DC_Motor.h"
 #include <stdint.h>
 
-/**
-args:
 
-histogram：长度为256的整型数组，表示图像中0~255出现的像素值的个数。
-
-pixel_total：整型变量，表示图像中像素的总数。
-
-*/
 uint8_t flag_show_status = 0;
 #define  _avg_fre 6
 static uint8_t _threshold_avg[_avg_fre] = {0};
@@ -31,6 +24,14 @@ uint8_t threshold_avg(uint8_t threshold){
     return ans/_avg_fre;
 }
 
+/**
+args:
+
+histogram：长度为256的整型数组，表示图像中0~255出现的像素值的个数。
+
+pixel_total：整型变量，表示图像中像素的总数。
+
+*/
 uint8_t otsu_threshold( uint8_t* histogram, int pixel_total ){
     //用于计算均值
     unsigned int sumB = 0;
