@@ -2,6 +2,7 @@
 #include "dis_camera.h"
 #include "message.h"
 #include "image_processing.h"
+#include <stdint.h>
 
 
 const uint8_t c_w = 188, c_h = 120;
@@ -61,12 +62,13 @@ void cal_area(int *area){
     if (flag == 0) return;
     uint8_t w = c_w / 2;
     int left = 0, right = 0;
-    for (uint16_t i = 0; i < c_h; i += 4){
-        for (uint16_t j = 0; j < w; j += 4) {
-            left += binarization_point(mt9v03x_image_dvp[i][j]);
+    for (uint8_t i = 0; i < c_h; ++i){
+        uint8_t *one_w = mt9v03x_image_dvp[i];
+        for (uint8_t j = 0; j < w; ++j) {
+            left += binarization_point(one_w[j]);
         }
-        for (uint16_t j = w; j < c_w; j += 4) {
-            right += binarization_point(mt9v03x_image_dvp[i][j]);
+        for (uint8_t j = w; j < c_w; ++j) {
+            right += binarization_point(one_w[j]);
         }
     }
     if (white_value_status){
