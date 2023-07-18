@@ -49,102 +49,6 @@ double ostu(uint8_t* hist, int min, int max, int ht, int wth){
 	return 0;
 }
 
-/**
-*args:
-*histogram：长度为256的整型数组，表示图像中0~255出现的像素值的个数。
-*pixel_total：整型变量，表示图像中像素的总数。
-*
-*https://www.ipol.im/pub/art/2016/158/article_lr.pdf
-*
-*/
-uint8_t ostu_threshold( uint8_t* histogram, int pixel_total ){
-    //用于计算均值
-    unsigned int sumB = 0;
-    unsigned int sum1 = 0;
-    //用于计算类间方差
-    float wB = 0.0f;
-    float wF = 0.0f;
-    float mF = 0.0f;
-    //用于记录最大的类间方差
-    float max_var = 0.0f;
-    //用于计算类间方差
-    float inter_var = 0.0f;
-    //返回值：表示计算得到的阈值
-    uint8_t threshold = 0;
-    //索引buf
-    int index_histo = 0;
-
-    for ( index_histo = 0; index_histo < 256; ++index_histo ){
-        sum1 += index_histo * histogram[ index_histo ];
-    }
-
-    for (index_histo = 0; index_histo < 256; ++index_histo){
-        wB += histogram[ index_histo ];
-        wF = pixel_total - wB;
-        if ( wB == 0 || wF == 0 ){
-            continue;
-        }
-        sumB += index_histo * histogram[ index_histo ];
-        mF = ( sum1 - sumB ) / wF;
-        inter_var = wB * wF * pow( ( sumB / wB ) - mF, 2);
-        if ( inter_var >= max_var ){
-            threshold = index_histo;
-            max_var = inter_var;
-        }
-    }
-
-    //threshold = threshold_avg(threshold);
-
-    if(flag_show_status){
-        sprintf(buf, " %d ", threshold);
-        show_right_bottom_message(buf);
-    }
-    
-    return threshold;
-}
-
-// uint8_t get_ostu( uint8_t* histogram, int pixel_total ) {
-
-//     int threshold = 0;
-//     double max_inter_var = -1.0;
-
-//     int pixel_integral = 0;
-//     for (int i = 0; i < 256; ++i) {
-//         pixel_integral += histogram[i] * i; 
-//     }
-
-//     for (int t = 0; t < 255; ++t) {
-    
-//         int back_pixels = 0;
-//         int front_pixels = pixel_total;
-
-//         double back_omega, front_omega, back_mean, front_mean, inter_var;
-
-//         int back_pixel_integral = 0;
-//         for (int i = 0; i <= t; ++i) {
-//             back_pixels += histogram[i];
-//             back_pixel_integral += histogram[i] * i;
-//         }
-
-//         front_pixels = pixel_total - back_pixels;
-//         int front_pixel_integral = pixel_integral - back_pixel_integral;
-
-//         back_omega = (double)back_pixels / pixel_total;
-//         front_omega = (double)front_pixels / pixel_total;
-
-//         back_mean = (double)back_pixel_integral / back_pixels;  
-//         front_mean = (double)front_pixel_integral / front_pixels;
-
-//         inter_var = back_omega * front_omega * (back_mean - front_mean) * (back_mean - front_mean);
-
-//         if (inter_var > max_inter_var) {
-//             max_inter_var = inter_var;
-//             threshold = t;
-//         }
-//     }
-
-//     return threshold;
-// }
 
 uint8_t get_ostu(){
 
@@ -190,12 +94,17 @@ uint8_t get_ostu(){
         micro_back = pixel_back_count ? (double)pixel_back_sum / pixel_back_count : 0.0;
         micro_fore = pixel_fore_count ? (double)pixel_fore_sum / pixel_fore_count : 0.0;
         
-        sigma = omega_back * omega_fore * (micro_back - micro_fore) * (micro_back - micro_fore);
+        sigma = omega_back * omega_fore * pow(micro_back - micro_fore, 2.0);
         
         if (sigma > sigma_b) {
             sigma_b = sigma;
             threshold = j;
         }
+    }
+
+    if(flag_show_status){
+        sprintf(buf, " %d ", threshold);
+        show_right_bottom_message(buf);
     }
 
     return threshold;

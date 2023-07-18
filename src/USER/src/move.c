@@ -3,10 +3,10 @@
 
 int _speed = 3000;
 
-void car_move(int8_t f){
+void car_move(int16_t f){
 
-    int left_speed = _speed - f * 30;
-    int right_speed = _speed + f * 30;
+    int left_speed = _speed - f * 15;
+    int right_speed = _speed + f * 15;
     if(left_speed < 0){
         left_speed = 0;
     }

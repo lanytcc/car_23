@@ -71,7 +71,10 @@ void cal_center(int *pair){
             }
         }
     }
-
+    if (white_value_status){
+        sprintf(buf, " %d|%d ", left, right);
+        show_right_top_message(buf);
+    }
     pair[0] = x_sum / pixel_count;
     pair[1] = y_sum / pixel_count;
 }

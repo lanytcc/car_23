@@ -4,6 +4,6 @@
 
 extern int _speed;
 
-void car_move(int8_t f);
+void car_move(int16_t f);
 
 #endif
