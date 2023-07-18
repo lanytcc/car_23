@@ -84,6 +84,7 @@ void cal_center(int *pair){
 
 static uint8_t x = 0;
 static uint8_t y = 0;
+int diff_x = 0;
 int diff_y = 0;
 int16_t cal_factor(){
 
@@ -95,8 +96,8 @@ int16_t cal_factor(){
 
     int xy[2] = {0};
     cal_center(xy);
-    
-    int diff_x = xy[0] - x;
+
+    diff_x = xy[0] - x;
     diff_y = xy[1] - y;
 
     x = xy[0];
