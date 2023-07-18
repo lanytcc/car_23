@@ -51,11 +51,11 @@ uint8_t otsu_threshold( uint8_t* histogram, int pixel_total ){
     //索引buf
     int index_histo = 0;
 
-    for ( index_histo = 1; index_histo < 256; ++index_histo ){
+    for ( index_histo = 0; index_histo < 256; ++index_histo ){
         sum1 += index_histo * histogram[ index_histo ];
     }
 
-    for (index_histo = 1; index_histo < 256; ++index_histo){
+    for (index_histo = 0; index_histo < 256; ++index_histo){
         wB += histogram[ index_histo ];
         if ( wB == 0 ){
             continue;
@@ -83,22 +83,26 @@ uint8_t otsu_threshold( uint8_t* histogram, int pixel_total ){
 uint8_t otsu( uint8_t* histogram, int pixel_total ){
     uint8_t threshold;
     //用于计算均值
-    unsigned int sum = 0;
+    uint32_t sum = 0;
     //索引buf
     int index_histo = 0;
 
-    uint32 pixel_back = 0;
-    uint32 pixel_fore = 0;
-    uint32 pixel_integral_back = 0;
-    uint32 pixel_integral_fore = 0;
+    uint32_t max, min;
+    uint32_t pixel_back = 0;
+    uint32_t pixel_fore = 0;
+    uint32_t pixel_integral_back = 0;
+    uint32_t pixel_integral_fore = 0;
     double OmegaBack, OmegaFore, MicroBack, MicroFore, SigmaB = -1, Sigma; // 类间方差; 
 
-    for ( index_histo = 1; index_histo < 256; ++index_histo ){
+    for ( index_histo = 0; index_histo < 256; ++index_histo ){
         sum += index_histo * histogram[ index_histo ];
-    } 
+    }
 
-    for ( index_histo = 1; index_histo < 256; ++index_histo )
-    {
+    for(max = 255; max > 0 && histogram[max] == 0; --max);
+    for(min = 0; min < 256 && histogram[min] == 0; ++min);
+
+    for ( index_histo = min; index_histo < max; ++index_histo ) {
+
         pixel_back = pixel_back + histogram[ index_histo ];
         pixel_fore = pixel_total - pixel_back;
 
@@ -112,7 +116,7 @@ uint8_t otsu( uint8_t* histogram, int pixel_total ){
         MicroFore = pixel_integral_fore*1.0 / pixel_fore;
 
         Sigma = OmegaBack * OmegaFore * (MicroBack - MicroFore) * (MicroBack - MicroFore);
-        
+
         if (Sigma > SigmaB) {
             SigmaB = Sigma;
             threshold = index_histo;
