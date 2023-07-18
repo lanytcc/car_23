@@ -205,13 +205,13 @@ uint8 GetOSTU(){
 }
 
 uint8_t get_threshold() {
-    uint8_t histogram[256] = {0};
+    // uint8_t histogram[256] = {0};
 
-    for (int i = 0; i < c_h; ++i) {
-        for (int j = 0; j < c_w; ++j) {
-            ++histogram[mt9v03x_image_dvp[i][j]];
-        }
-    }
+    // for (int i = 0; i < c_h; ++i) {
+    //     for (int j = 0; j < c_w; ++j) {
+    //         ++histogram[mt9v03x_image_dvp[i][j]];
+    //     }
+    // }
 
     return GetOSTU();
     //return get_ostu(histogram, c_h*c_w);
