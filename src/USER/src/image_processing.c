@@ -57,10 +57,10 @@ uint8_t otsu_threshold( uint8_t* histogram, int pixel_total ){
 
     for (index_histo = 0; index_histo < 256; ++index_histo){
         wB += histogram[ index_histo ];
-        if ( wB == 0 ){
+        wF = pixel_total - wB;
+        if ( wB == 0 || wF == 0 ){
             continue;
         }
-        wF = pixel_total - wB;
         sumB += index_histo * histogram[ index_histo ];
         mF = ( sum1 - sumB ) / wF;
         inter_var = wB * wF * ( ( sumB / wB ) - mF ) * ( ( sumB / wB ) - mF );
@@ -80,62 +80,14 @@ uint8_t otsu_threshold( uint8_t* histogram, int pixel_total ){
     return threshold;
 }
 
-uint8_t otsu( uint8_t* histogram, int pixel_total ){
-    uint8_t threshold;
-    //用于计算均值
-    uint32_t sum = 0;
-    //索引buf
-    int index_histo = 0;
-
-    uint32_t max, min;
-    uint32_t pixel_back = 0;
-    uint32_t pixel_fore = 0;
-    uint32_t pixel_integral_back = 0;
-    uint32_t pixel_integral_fore = 0;
-    double OmegaBack, OmegaFore, MicroBack, MicroFore, SigmaB = -1.0, Sigma; // 类间方差; 
-
-    for ( index_histo = 0; index_histo < 256; ++index_histo ){
-        sum += index_histo * histogram[ index_histo ];
-    }
-
-    for(min = 0; min < 256 && histogram[min] == 0; ++min);
-    for(max = 255; max > 0 && histogram[max] == 0; --max);
-
-    for ( index_histo = min; index_histo < max; ++index_histo ) {
-
-        pixel_back = pixel_back + histogram[ index_histo ];
-        pixel_fore = pixel_total - pixel_back;
-
-        OmegaBack = pixel_back*1.0 / pixel_total;
-        OmegaFore = pixel_fore*1.0 / pixel_total;
-
-        pixel_integral_back += histogram[ index_histo ] * index_histo;
-        pixel_integral_fore = sum - pixel_integral_back;
-
-        MicroBack = pixel_integral_back*1.0 / pixel_back;
-        MicroFore = pixel_integral_fore*1.0 / pixel_fore;
-
-        Sigma = OmegaBack * OmegaFore * (MicroBack - MicroFore) * (MicroBack - MicroFore);
-
-        if (Sigma > SigmaB) {
-            SigmaB = Sigma;
-            threshold = index_histo;
-        }
-    }
-    
-    return threshold;
-}
-
 uint8_t get_threshold() {
     uint8_t histogram[256] = {0};
 
     for (int i = 0; i < c_h; ++i) {
-        uint8_t *one_h = mt9v03x_image_dvp[i];
         for (int j = 0; j < c_w; ++j) {
-            histogram[one_h[j]]++;
+            histogram[mt9v03x_image_dvp[i][j]]++;
         }
     }
 
-    //return otsu_threshold(histogram, c_h * c_w);
-    return otsu(histogram, c_h * c_w);
+    return otsu_threshold(histogram, c_h * c_w);
 }
