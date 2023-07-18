@@ -3,6 +3,8 @@
 #include "dis_camera.h"
 #include "message.h"
 
+#include <stdlib.h>
+
 int _speed = 4000;
 
 uint8_t speed_show = 0;
