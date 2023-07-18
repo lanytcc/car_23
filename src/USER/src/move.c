@@ -1,5 +1,6 @@
 #include "headfile.h"
 #include "move.h"
+#include "dis_camera.h"
 #include "message.h"
 
 int _speed = 4000;
@@ -29,4 +30,55 @@ void car_move(int16_t f){
     }
     motor_forward(left, left_speed);
     motor_forward(right, right_speed);
+}
+
+#define BASE_SPEED 5000 
+#define MAX_SPEED 10000
+
+int clamp(int value, int min, int max){
+    if(value < min) return min;
+    if(value > max) return max;
+    return value;
+}
+
+void cal_speeds(int *left_speed, int *right_speed){
+
+    if(diff_x > 0){ 
+        // x增大,向右倾斜
+        *right_speed = BASE_SPEED + pow(abs(diff_x), 3);
+        *left_speed = BASE_SPEED - pow(abs(diff_x), 3);
+    }
+    else if(diff_x < 0){
+        // x减小,向左倾斜
+        *left_speed = BASE_SPEED - pow(abs(diff_x), 3);
+        *right_speed = BASE_SPEED + pow(abs(diff_x), 3);
+    }
+
+    if(diff_y > 0){
+        // y增大
+        *left_speed += pow(abs(diff_y), 4);
+        *right_speed += pow(abs(diff_y), 4); 
+    }
+    else if(diff_y < 0){
+        // y减小
+        *left_speed -= pow(abs(diff_y), 4);
+        *right_speed -= pow(abs(diff_y), 4);
+    }
+
+    // 限制速度范围
+    *left_speed = clamp(*left_speed, 0, MAX_SPEED);
+    *right_speed = clamp(*right_speed, 0, MAX_SPEED);
+
+}
+
+void car_move_calculus(){
+    
+    int left_speed = BASE_SPEED; 
+    int right_speed = BASE_SPEED;
+
+    cal_speeds(&left_speed, &right_speed);
+
+    motor_forward(left, left_speed);
+    motor_forward(right, right_speed);
+
 }

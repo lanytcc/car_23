@@ -41,10 +41,10 @@ int main() {
         key_value = key_check();
 
         camera_check();
-        //change_flag();
+        change_flag();
         if(display_status)display();
         factor = cal_factor();
-        car_move(factor);
+        car_move_calculus();
         sample();
 
         ms_new = get_time();
