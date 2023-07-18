@@ -27,8 +27,9 @@ void sample();
 
 uint8_t binarization_point(uint8_t p);
 
-void cal_area(int *area);
+void cal_center(int *area);
 
-int8_t cal_factor();
+extern int diff_y;
+int16_t cal_factor();
 
 #endif

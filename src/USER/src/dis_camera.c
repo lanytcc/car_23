@@ -53,40 +53,47 @@ uint8_t binarization_point(uint8_t p){
     }
 }
 
+
 uint8_t white_value_status = 0;
-void cal_area(int *area){
+void cal_center(int *pair){
     if (flag == 0) return;
-    uint8_t w = c_w / 2;
-    int left = 0, right = 0;
-    for (uint8_t i = 0; i < c_h; ++i){
-        uint8_t *one_w = mt9v03x_image_dvp[i];
-        for (uint8_t j = 0; j < w; ++j) {
-            left += binarization_point(one_w[j]);
-        }
-        for (uint8_t j = w; j < c_w; ++j) {
-            right += binarization_point(one_w[j]);
+
+    int x_sum = 0;
+    int y_sum = 0;
+    int pixel_count = 0;
+
+    for(int i = 0; i < c_h; ++i) {
+        for(int j = 0; j < c_w; ++j) {
+            if( binarization_point(mt9v03x_image_dvp[i][j]) == 1 ) {
+                x_sum += j;
+                y_sum += i; 
+                ++pixel_count;
+            }
         }
     }
-    if (white_value_status){
-        sprintf(buf, " %d|%d ", left, right);
-        show_right_top_message(buf);
-    }
-    area[0] = left;
-    area[1] = right;
+
+    pair[0] = x_sum / pixel_count;
+    pair[1] = y_sum / pixel_count;
 }
 
-int8_t cal_factor(){
 
-    int8_t ans = 0;
+static uint8_t x = 0;
+static uint8_t y = 0;
+int diff_y = 0;
+int16_t cal_factor(){
+
+    int16_t ans = 0;
 
     if(flag == 0){
         return ans;
     }
-    int area[2] = {0};
-    cal_area(area);
-    int diff = area[0] - area[1];
 
-    ans = diff / 10;
+    int xy[2] = {0};
+    cal_center(xy);
+    int diff_x = xy[0] - x;
+    diff_y = xy[1] - y;
+
+    ans = diff_x;
 
     return ans;
 }

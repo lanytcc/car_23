@@ -28,7 +28,7 @@ uint8_t threshold_avg(uint8_t threshold){
 /**
 直接计算类间方差,没有遍历所有阈值,需要提前指定阈值的范围(min到max)。
 */
-double otsu(uint8_t* hist, int min, int max, int ht, int wth){
+double ostu(uint8_t* hist, int min, int max, int ht, int wth){
 
 	double sum = 0.0, mean_bg = 0.0, var_bg = 0.0;
 
@@ -57,7 +57,7 @@ double otsu(uint8_t* hist, int min, int max, int ht, int wth){
 *https://www.ipol.im/pub/art/2016/158/article_lr.pdf
 *
 */
-uint8_t otsu_threshold( uint8_t* histogram, int pixel_total ){
+uint8_t ostu_threshold( uint8_t* histogram, int pixel_total ){
     //用于计算均值
     unsigned int sumB = 0;
     unsigned int sum1 = 0;
@@ -103,6 +103,48 @@ uint8_t otsu_threshold( uint8_t* histogram, int pixel_total ){
     return threshold;
 }
 
+uint8_t get_ostu( uint8_t* histogram, int pixel_total ) {
+
+    int threshold = 0; 
+    double max_inter_var = -1.0;
+
+    int pixel_integral = 0;
+    for (int i = 0; i < 256; ++i) {
+        pixel_integral += histogram[i] * i; 
+    }
+
+    for (int t = 0; t < 255; ++t) {
+    
+        int back_pixels = 0;
+        int front_pixels = pixel_total;
+
+        double back_omega, front_omega, back_mean, front_mean, inter_var;
+
+        int back_pixel_integral = 0;
+        for (int i = 0; i <= t; ++i) {
+            back_pixels += histogram[i];
+            back_pixel_integral += histogram[i] * i;
+        }
+
+        front_pixels = pixel_total - back_pixels;
+        int front_pixel_integral = pixel_integral - back_pixel_integral;
+
+        back_omega = (double)back_pixels / pixel_total;
+        front_omega = (double)front_pixels / pixel_total;
+
+        back_mean = (double)back_pixel_integral / back_pixels;  
+        front_mean = (double)front_pixel_integral / front_pixels;
+
+        inter_var = back_omega * front_omega * (back_mean - front_mean) * (back_mean - front_mean);
+
+        if (inter_var > max_inter_var) {
+            max_inter_var = inter_var;
+            threshold = t;
+        }
+    }
+
+    return threshold;
+}
 
 
 uint8_t get_threshold() {
@@ -114,6 +156,6 @@ uint8_t get_threshold() {
         }
     }
 
-    //return otsu(histogram, 0, 255, c_h, c_w);
-    return otsu_threshold(histogram, c_h * c_w);
+    return get_ostu(histogram, c_h*c_w);
+    //return ostu_threshold(histogram, c_h * c_w);
 }
