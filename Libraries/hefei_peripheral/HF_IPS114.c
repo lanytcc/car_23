@@ -449,7 +449,7 @@ void ips114_show_gray_image(uint8 threshold) {
     }
 
     uint16 i = 0, j = 0;
-    uint16 color = 0,temp = 0;
+    uint16 _b = 0,temp = 0;
     uint16 width_index = 0, height_index = 0;
 
     ips114_set_region(0, 0, 239, 134);             // ������ʾ����
