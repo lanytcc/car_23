@@ -67,15 +67,15 @@ void cal_speeds(int *left_speed, int *right_speed){
         *right_speed = BASE_SPEED + _x * 100;
     }
 
-    if(_cnt == 0 && _x < 6 && dis_y > 20){
+    if(_cnt == 0 && _x < 6 && dis_y > 16){
         // y增大
         *left_speed = 9000;
-        *right_speed = 1000;
-        _cnt = 42;
+        *right_speed = 0;
+        _cnt = 28;
     }
-    if(_cnt == 21){
+    if(_cnt == 14){
         // y增大
-        *left_speed = 1000;
+        *left_speed = 0;
         *right_speed = 9000;
     }
     if(_cnt != 0) {
