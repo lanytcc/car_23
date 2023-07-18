@@ -4,6 +4,7 @@
 #include "message.h"
 
 #include <math.h>
+#include <stdint.h>
 #include <stdlib.h>
 
 int _speed = 4000;
@@ -44,27 +45,35 @@ int clamp(int value, int min, int max){
     return value;
 }
 
+static uint8_t last_x = 94;
+static uint8_t last_y = 60;
 void cal_speeds(int *left_speed, int *right_speed){
 
-    int _x = abs(diff_x);
-    int _y = abs(diff_y);
-    if(diff_x > 0){ 
+    int _x = abs(dis_x);
+    int _y = abs(dis_y);
+    int diff_x = _x - last_x;
+    int diff_y = _y - last_y;
+
+    last_x = _x;
+    last_y = _y;
+
+    if(dis_x > 0){ 
         // x增大,向右倾斜
-        *right_speed = BASE_SPEED + _x * 600;
-        *left_speed = BASE_SPEED - _x * 600;
+        *right_speed = BASE_SPEED + _x * 100;
+        *left_speed = BASE_SPEED - _x * 100;
     }
-    else if(diff_x < 0){
+    else if(dis_x < 0){
         // x减小,向左倾斜
-        *left_speed = BASE_SPEED - _x * 600;
-        *right_speed = BASE_SPEED + _x * 600;
+        *left_speed = BASE_SPEED - _x * 100;
+        *right_speed = BASE_SPEED + _x * 100;
     }
 
-    if(diff_y > 0){
+    if(dis_y > 0){
         // y增大
         *left_speed += _y * _y * 5;
         *right_speed += _y * _y * 5; 
     }
-    else if(diff_y < 0){
+    else if(dis_y < 0){
         // y减小
         *left_speed -= _y * _y * 5;
         *right_speed -= _y * _y * 5;
@@ -84,7 +93,7 @@ void car_move_calculus(){
     cal_speeds(&left_speed, &right_speed);
 
     if (speed_show) {
-        sprintf(buf, " %d|%d|%d ", diff_x, left_speed, right_speed);
+        sprintf(buf, " %d|%d|%d ", dis_x, left_speed, right_speed);
         show_right_top_message(buf);
     }
     motor_forward(left, left_speed);

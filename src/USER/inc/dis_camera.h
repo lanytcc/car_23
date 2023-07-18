@@ -29,10 +29,8 @@ uint8_t binarization_point(uint8_t p);
 
 void cal_center(int *area);
 
-extern uint8_t last_x;
-extern uint8_t last_y;
-extern int diff_x;
-extern int diff_y;
+extern int dis_x;
+extern int dis_y;
 int16_t cal_factor();
 
 #endif
