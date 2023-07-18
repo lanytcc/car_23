@@ -3,6 +3,7 @@
 #include "dis_camera.h"
 #include "message.h"
 
+#include <math.h>
 #include <stdlib.h>
 
 int _speed = 4000;
@@ -58,13 +59,13 @@ void cal_speeds(int *left_speed, int *right_speed){
 
     if(diff_y > 0){
         // y增大
-        *left_speed += pow(abs(diff_y), 4);
-        *right_speed += pow(abs(diff_y), 4); 
+        *left_speed += pow(abs(diff_y), 2);
+        *right_speed += pow(abs(diff_y), 2); 
     }
     else if(diff_y < 0){
         // y减小
-        *left_speed -= pow(abs(diff_y), 4);
-        *right_speed -= pow(abs(diff_y), 4);
+        *left_speed -= pow(abs(diff_y), 2);
+        *right_speed -= pow(abs(diff_y), 2);
     }
 
     // 限制速度范围
