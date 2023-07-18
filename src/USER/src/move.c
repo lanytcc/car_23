@@ -50,13 +50,13 @@ void cal_speeds(int *left_speed, int *right_speed){
     int _y = abs(diff_y);
     if(diff_x > 0){ 
         // x增大,向右倾斜
-        *right_speed = BASE_SPEED + _x * _x * _x;
-        *left_speed = BASE_SPEED - _x * _x * _x;
+        *right_speed = BASE_SPEED + _x * 300;
+        *left_speed = BASE_SPEED - _x * 300;
     }
     else if(diff_x < 0){
         // x减小,向左倾斜
-        *left_speed = BASE_SPEED - _x * _x * _x;
-        *right_speed = BASE_SPEED + _x * _x * _x;
+        *left_speed = BASE_SPEED - _x * 300;
+        *right_speed = BASE_SPEED + _x * 300;
     }
 
     if(diff_y > 0){
@@ -83,6 +83,10 @@ void car_move_calculus(){
 
     cal_speeds(&left_speed, &right_speed);
 
+    if (speed_show) {
+        sprintf(buf, " %d|%d|%d ", diff_x, left_speed, right_speed);
+        show_right_top_message(buf);
+    }
     motor_forward(left, left_speed);
     motor_forward(right, right_speed);
 
