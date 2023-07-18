@@ -92,14 +92,14 @@ uint8_t otsu( uint8_t* histogram, int pixel_total ){
     uint32_t pixel_fore = 0;
     uint32_t pixel_integral_back = 0;
     uint32_t pixel_integral_fore = 0;
-    double OmegaBack, OmegaFore, MicroBack, MicroFore, SigmaB = -1, Sigma; // 类间方差; 
+    double OmegaBack, OmegaFore, MicroBack, MicroFore, SigmaB = -1.0, Sigma; // 类间方差; 
 
     for ( index_histo = 0; index_histo < 256; ++index_histo ){
         sum += index_histo * histogram[ index_histo ];
     }
 
-    for(max = 255; max > 0 && histogram[max] == 0; --max);
     for(min = 0; min < 256 && histogram[min] == 0; ++min);
+    for(max = 255; max > 0 && histogram[max] == 0; --max);
 
     for ( index_histo = min; index_histo < max; ++index_histo ) {
 
