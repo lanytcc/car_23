@@ -82,8 +82,8 @@ void cal_center(int *pair){
 }
 
 
-uint8_t last_x = 0;
-uint8_t last_y = 0;
+uint8_t last_x = 90;
+uint8_t last_y = 60;
 int diff_x = 0;
 int diff_y = 0;
 int16_t cal_factor(){
