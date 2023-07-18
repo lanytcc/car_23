@@ -4,6 +4,7 @@
 #include "dis_camera.h"
 #include "image_processing.h"
 #include "main.h"
+#include "move.h"
 
 void key_fn(unsigned char key_value){
     if (key_value != 0xFF){
@@ -42,13 +43,21 @@ void key_fn(unsigned char key_value){
                     show_left_top_message("white_value_status: on ");
                 }
             } else if (key_value == 0x06) {
-                if (flag_show_status) {
-                    flag_show_status = 0;
-                    show_left_top_message("flag_show_status: off ");
+                // if (flag_show_status) {
+                //     flag_show_status = 0;
+                //     show_left_top_message("flag_show_status: off ");
+                // }
+                // else {
+                //     flag_show_status = 1;
+                //     show_left_top_message("flag_show_status: on ");
+                // }
+                if (speed_show) {
+                    speed_show = 0;
+                    show_left_top_message("speed_show: off");
                 }
                 else {
-                    flag_show_status = 1;
-                    show_left_top_message("flag_show_status: on ");
+                    speed_show = 1;
+                    show_left_top_message("speed_show: on ");
                 }
             }
             key_value = key_check();
