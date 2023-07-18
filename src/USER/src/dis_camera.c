@@ -54,7 +54,7 @@ uint8_t binarization_point(uint8_t p){
 }
 
 
-uint8_t white_value_status = 0;
+uint8_t center_value_status = 0;
 void cal_center(int *pair){
     if (flag == 0) return;
 
@@ -71,12 +71,14 @@ void cal_center(int *pair){
             }
         }
     }
-    if (white_value_status){
-        sprintf(buf, " %d|%d ", left, right);
-        show_right_top_message(buf);
-    }
+
     pair[0] = x_sum / pixel_count;
     pair[1] = y_sum / pixel_count;
+
+    if (center_value_status){
+        sprintf(buf, " %d|%d ", pair[0], pair[1]);
+        show_right_top_message(buf);
+    }
 }
 
 

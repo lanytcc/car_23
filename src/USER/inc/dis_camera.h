@@ -10,7 +10,7 @@ enum camera_stauts{
 };
 extern enum camera_stauts camera_stauts;
 
-extern uint8_t white_value_status;
+extern uint8_t center_value_status;
 
 extern uint8_t flag;
 extern uint8_t frame_cnt;

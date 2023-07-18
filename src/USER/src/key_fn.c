@@ -33,12 +33,12 @@ void key_fn(unsigned char key_value){
                     show_left_top_message("frame_dis_status: on ");
                 }
             } else if (key_value == 0x05) {
-                if (white_value_status) {
-                    white_value_status = 0;
+                if (center_value_status) {
+                    center_value_status = 0;
                     show_left_top_message("white_value_status: off");
                 }
                 else {
-                    white_value_status = 1;
+                    center_value_status = 1;
                     show_left_top_message("white_value_status: on ");
                 }
             } else if (key_value == 0x06) {
