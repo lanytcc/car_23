@@ -420,8 +420,7 @@ void ips114_show_binary_image (uint16 x, uint16 y, const uint8 *image, uint16 wi
 // @param       threshold       ��ֵ����ʾ��ֵ 0-��������ֵ��
 // @return      void
 //-------------------------------------------------------------------------------------------------------------------
-void ips114_show_gray_image (uint8 threshold)
-{
+void show_image() {
 
     uint32 i = 0, j = 0;
     uint16 color = 0,temp = 0;
@@ -429,27 +428,43 @@ void ips114_show_gray_image (uint8 threshold)
 
     ips114_set_region(0, 0, 239, 134);             // ������ʾ����
 
-    for(j = 0; j < 135; ++j)
-    {
+    for(j = 0; j < 135; ++j){
         height_index = j * 120 / 135;
-        for(i = 0; i < 135; ++i)
-        {
+        for(i = 0; i < 240; ++i){
             width_index = i * 188 / 240;
             temp = mt9v03x_image_dvp[height_index][width_index];               // ��ȡ���ص�
-            if(threshold == 0)
-            {
-                color = (0x001f & ((temp) >> 3)) << 11;
-                color = color | (((0x003f) & ((temp) >> 2)) << 5);
-                color = color | (0x001f & ((temp) >> 3));
-                ips114_write_16bit_data(color);
-            }
-            else if(temp > threshold){
+            color = (0x001f & ((temp) >> 3)) << 11;
+            color = color | (((0x003f) & ((temp) >> 2)) << 5);
+            color = color | (0x001f & ((temp) >> 3));
+            ips114_write_16bit_data(color);
+        }
+    }
+}
+
+void ips114_show_gray_image(uint8 threshold) {
+
+    if(threshold == 0){
+        show_image();
+        return;
+    }
+
+    uint32 i = 0, j = 0;
+    uint16 color = 0,temp = 0;
+    uint32 width_index = 0, height_index = 0;
+
+    ips114_set_region(0, 0, 239, 134);             // ������ʾ����
+
+    for(j = 0; j < 135; ++j){
+        height_index = j * 120 / 135;
+        for(i = 0; i < 240; ++i){
+            width_index = i * 188 / 240;
+            temp = mt9v03x_image_dvp[height_index][width_index];               // ��ȡ���ص�
+            if(temp > threshold){
                 ips114_write_16bit_data(RGB565_WHITE);
             }
             else {
                 ips114_write_16bit_data(RGB565_BLACK);
             }
-
         }
     }
 }

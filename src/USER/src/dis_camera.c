@@ -16,7 +16,7 @@ void change_flag(){
 }
 
 void display() {
-    if(camera_stauts == ok){ //�ж��Ƿ���ɲ���
+    if(camera_stauts == ok){ //判断是否完成采集
         ips114_show_gray_image(flag);
         frame_cnt += 1;
     }
