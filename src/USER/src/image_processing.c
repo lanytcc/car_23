@@ -25,12 +25,14 @@ uint8_t threshold_avg(uint8_t threshold){
 }
 
 /**
-args:
-
-histogram：长度为256的整型数组，表示图像中0~255出现的像素值的个数。
-
-pixel_total：整型变量，表示图像中像素的总数。
-
+*args:
+*
+*histogram：长度为256的整型数组，表示图像中0~255出现的像素值的个数。
+*
+*pixel_total：整型变量，表示图像中像素的总数。
+*
+*https://www.ipol.im/pub/art/2016/158/article_lr.pdf
+*
 */
 uint8_t otsu_threshold( uint8_t* histogram, int pixel_total ){
     //用于计算均值
@@ -54,7 +56,7 @@ uint8_t otsu_threshold( uint8_t* histogram, int pixel_total ){
     }
 
     for (index_histo = 1; index_histo < 256; ++index_histo){
-        wB = wB + histogram[ index_histo ];
+        wB += histogram[ index_histo ];
         if ( wB == 0 ){
             continue;
         }
