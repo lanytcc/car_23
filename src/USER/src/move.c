@@ -7,7 +7,7 @@
 #include <stdint.h>
 #include <stdlib.h>
 
-#define BASE_SPEED 5000 
+#define BASE_SPEED 6000 
 #define MAX_SPEED 10000
 
 uint8_t speed_show = 0;
@@ -46,6 +46,8 @@ int clamp(int value, int min, int max){
 static uint8_t last_x = 94;
 static uint8_t last_y = 60;
 static uint8_t _cnt = 0;
+#define _k 100
+#define _d 70
 void cal_speeds(int *left_speed, int *right_speed){
 
     int _x = abs(dis_x);
@@ -58,23 +60,26 @@ void cal_speeds(int *left_speed, int *right_speed){
 
     if(_cnt == 0 && dis_x > 0){ 
         // x增大,向右倾斜
-        *left_speed = BASE_SPEED + _x * 100 + diff_x * 100;
-        *right_speed = BASE_SPEED - _x * 100 + diff_y * 100;
+        *left_speed = BASE_SPEED + _x * _k + diff_x * _d;
+        *right_speed = BASE_SPEED - _x * _k + diff_x * _d;
     }
     else if(_cnt == 0 && dis_x < 0){
         // x减小,向左倾斜
-        *left_speed = BASE_SPEED - _x * 100 + diff_x * 100;
-        *right_speed = BASE_SPEED + _x * 100 + diff_y * 100;
+        *left_speed = BASE_SPEED - _x * _k + diff_x * _d;
+        *right_speed = BASE_SPEED + _x * _k + diff_x * _d;
     }
 
-    if(_cnt == 0 && _x < 6 && dis_y > 16){
-        // y增大
+    if(_cnt == 0 && _x < 6 && dis_y > 10 && dis_y < 16){
+        *left_speed -= 1000;
+        *right_speed -= 1000;
+    }
+
+    if(_cnt == 0 && _x < 6 && dis_y >= 16){
         *left_speed = 10000;
         *right_speed = 0;
         _cnt = 42;
     }
     if(_cnt == 21){
-        // y增大
         *left_speed = 0;
         *right_speed = 10000;
     }
