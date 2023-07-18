@@ -47,8 +47,8 @@ int clamp(int value, int min, int max){
 static uint8_t last_x = 94;
 static uint8_t last_y = 60;
 static uint8_t _cnt = 0;
-#define _k 120
-#define _d 98
+#define _k 110
+#define _d 170
 void cal_speeds(int *left_speed, int *right_speed){
 
     int _x = abs(dis_x);
@@ -59,12 +59,12 @@ void cal_speeds(int *left_speed, int *right_speed){
     last_x = _x;
     last_y = _y;
 
-    if(_cnt == 0 && dis_x > 0){ 
+    if(/*_cnt == 0 && */ dis_x > 0){ 
         // x增大,向右倾斜
         *left_speed = BASE_SPEED + _x * _k + diff_x * _d;
         *right_speed = BASE_SPEED - _x * _k + diff_x * _d;
     }
-    else if(_cnt == 0 && dis_x < 0){
+    else if(/*_cnt == 0 && */ dis_x < 0){
         // x减小,向左倾斜
         *left_speed = BASE_SPEED - _x * _k + diff_x * _d;
         *right_speed = BASE_SPEED + _x * _k + diff_x * _d;
@@ -75,13 +75,16 @@ void cal_speeds(int *left_speed, int *right_speed){
     //     *right_speed -= 1500;
     // }
 
-    if(_cnt == 0 && _x < 6 && dis_y >= 14){
+    if(/*_cnt == 0 && */_x < 6 && dis_y >= 13){
         // *left_speed = 10000;
         // *right_speed = 0;
         // _cnt = 56;
-        motor_forward(left, 0);
+        motor_forward(left, 9000);
         motor_forward(right, 0);
-        Delay_Ms(2000);
+        Delay_Ms(900);
+        motor_forward(left, 0);
+        motor_forward(right, 9000);
+        Delay_Ms(900);
     }
     // if(_cnt == 28){
     //     *left_speed = 0;
