@@ -75,14 +75,17 @@ void cal_speeds(int *left_speed, int *right_speed){
     //     *right_speed -= 1500;
     // }
 
-    if(/*_cnt == 0 && */_x < 6 && dis_y >= 13){
+    if(/*_cnt == 0 && */_x < 6 && dis_y >= 12){
         // *left_speed = 10000;
         // *right_speed = 0;
         // _cnt = 56;
         motor_forward(left, 9000);
-        motor_forward(right, 0);
+        motor_forward(right, 1000);
         Delay_Ms(400);
         motor_forward(left, 0);
+        motor_forward(right, 0);
+        Delay_Ms(400);
+        motor_forward(left, 1000);
         motor_forward(right, 9000);
         Delay_Ms(400);
     }
