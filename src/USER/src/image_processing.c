@@ -9,7 +9,7 @@
 
 
 uint8_t flag_show_status = 0;
-#define  _avg_fre 6
+#define  _avg_fre 4
 static uint8_t _threshold_avg[_avg_fre] = {0};
 static uint8_t _pos = 0;
 uint8_t threshold_avg(uint8_t threshold){
@@ -47,7 +47,7 @@ uint8_t otsu_threshold( uint8_t* histogram, int pixel_total ){
     //返回值：表示计算得到的阈值
     uint8_t threshold = 0;
     //索引buf
-    uint16_t index_histo = 0;
+    int index_histo = 0;
 
     for ( index_histo = 1; index_histo < 256; ++index_histo ){
         sum1 += index_histo * histogram[ index_histo ];
@@ -55,11 +55,11 @@ uint8_t otsu_threshold( uint8_t* histogram, int pixel_total ){
 
     for (index_histo = 1; index_histo < 256; ++index_histo){
         wB = wB + histogram[ index_histo ];
-        wF = pixel_total - wB;
-        if ( wB == 0 || wF == 0 ){
+        if ( wB == 0 ){
             continue;
         }
-        sumB = sumB + index_histo * histogram[ index_histo ];
+        wF = pixel_total - wB;
+        sumB += index_histo * histogram[ index_histo ];
         mF = ( sum1 - sumB ) / wF;
         inter_var = wB * wF * ( ( sumB / wB ) - mF ) * ( ( sumB / wB ) - mF );
         if ( inter_var >= max_var ){
@@ -79,7 +79,9 @@ uint8_t otsu_threshold( uint8_t* histogram, int pixel_total ){
 }
 
 uint8_t get_threshold() {
-    uint8_t histogram[256] = {0};
+    uint8_t histogram[256];
+
+    for (int i = 0; i < 256; ++i) histogram[i] = 0;
 
     for (int i = 0; i < c_h; ++i) {
         uint8_t *one_h = mt9v03x_image_dvp[i];

@@ -426,13 +426,13 @@ void show_image() {
     uint16 color = 0,temp = 0;
     uint32 width_index = 0, height_index = 0;
 
-    ips114_set_region(0, 0, 239, 134);             // ������ʾ����
+    ips114_set_region(0, 0, 239, 134);             
 
     for(j = 0; j < 135; ++j){
         height_index = j * 120 / 135;
         for(i = 0; i < 240; ++i){
             width_index = i * 188 / 240;
-            temp = mt9v03x_image_dvp[height_index][width_index];               // ��ȡ���ص�
+            temp = mt9v03x_image_dvp[height_index][width_index];               
             color = (0x001f & ((temp) >> 3)) << 11;
             color = color | (((0x003f) & ((temp) >> 2)) << 5);
             color = color | (0x001f & ((temp) >> 3));
@@ -448,9 +448,9 @@ void ips114_show_gray_image(uint8 threshold) {
         return;
     }
 
-    uint32 i = 0, j = 0;
+    uint16 i = 0, j = 0;
     uint16 color = 0,temp = 0;
-    uint32 width_index = 0, height_index = 0;
+    uint16 width_index = 0, height_index = 0;
 
     ips114_set_region(0, 0, 239, 134);             // ������ʾ����
 
