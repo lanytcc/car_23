@@ -71,9 +71,9 @@ void cal_speeds(int *left_speed, int *right_speed){
         // y增大
         *left_speed = 9000;
         *right_speed = 1000;
-        _cnt = 20;
+        _cnt = 42;
     }
-    if(_cnt == 10){
+    if(_cnt == 21){
         // y增大
         *left_speed = 1000;
         *right_speed = 9000;
