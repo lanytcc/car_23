@@ -8,7 +8,7 @@
 #include <stdint.h>
 #include <stdlib.h>
 
-#define BASE_SPEED 6000 
+#define BASE_SPEED 5500 
 #define MAX_SPEED 10000
 
 uint8_t speed_show = 0;
@@ -47,8 +47,8 @@ int clamp(int value, int min, int max){
 static uint8_t last_x = 94;
 static uint8_t last_y = 60;
 static uint8_t _cnt = 0;
-#define _k 110
-#define _d 170
+#define _k 100
+#define _d 160
 void cal_speeds(int *left_speed, int *right_speed){
 
     int _x = abs(dis_x);
@@ -79,14 +79,14 @@ void cal_speeds(int *left_speed, int *right_speed){
         // *left_speed = 10000;
         // *right_speed = 0;
         // _cnt = 56;
-        motor_forward(left, 8000);
+        motor_forward(left, 7000);
         motor_forward(right, 1000);
         Delay_Ms(400);
         motor_forward(left, 2000);
         motor_forward(right, 2000);
-        Delay_Ms(400);
+        Delay_Ms(500);
         motor_forward(left, 1000);
-        motor_forward(right, 8000);
+        motor_forward(right, 7000);
         Delay_Ms(400);
     }
     // if(_cnt == 28){
