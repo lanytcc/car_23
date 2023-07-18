@@ -105,7 +105,7 @@ uint8_t ostu_threshold( uint8_t* histogram, int pixel_total ){
 
 uint8_t get_ostu( uint8_t* histogram, int pixel_total ) {
 
-    int threshold = 0; 
+    int threshold = 0;
     double max_inter_var = -1.0;
 
     int pixel_integral = 0;
