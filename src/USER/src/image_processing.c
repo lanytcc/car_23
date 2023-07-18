@@ -103,105 +103,102 @@ uint8_t ostu_threshold( uint8_t* histogram, int pixel_total ){
     return threshold;
 }
 
-uint8_t get_ostu( uint8_t* histogram, int pixel_total ) {
+// uint8_t get_ostu( uint8_t* histogram, int pixel_total ) {
 
-    int threshold = 0;
-    double max_inter_var = -1.0;
+//     int threshold = 0;
+//     double max_inter_var = -1.0;
 
-    int pixel_integral = 0;
-    for (int i = 0; i < 256; ++i) {
-        pixel_integral += histogram[i] * i; 
+//     int pixel_integral = 0;
+//     for (int i = 0; i < 256; ++i) {
+//         pixel_integral += histogram[i] * i; 
+//     }
+
+//     for (int t = 0; t < 255; ++t) {
+    
+//         int back_pixels = 0;
+//         int front_pixels = pixel_total;
+
+//         double back_omega, front_omega, back_mean, front_mean, inter_var;
+
+//         int back_pixel_integral = 0;
+//         for (int i = 0; i <= t; ++i) {
+//             back_pixels += histogram[i];
+//             back_pixel_integral += histogram[i] * i;
+//         }
+
+//         front_pixels = pixel_total - back_pixels;
+//         int front_pixel_integral = pixel_integral - back_pixel_integral;
+
+//         back_omega = (double)back_pixels / pixel_total;
+//         front_omega = (double)front_pixels / pixel_total;
+
+//         back_mean = (double)back_pixel_integral / back_pixels;  
+//         front_mean = (double)front_pixel_integral / front_pixels;
+
+//         inter_var = back_omega * front_omega * (back_mean - front_mean) * (back_mean - front_mean);
+
+//         if (inter_var > max_inter_var) {
+//             max_inter_var = inter_var;
+//             threshold = t;
+//         }
+//     }
+
+//     return threshold;
+// }
+
+uint8_t get_ostu(){
+
+    int16_t i, j;
+    uint32_t pixel_count = 0, pixel_sum = 0;
+    uint32_t pixel_back_count = 0, pixel_back_sum = 0;
+    uint32_t pixel_fore_count = 0, pixel_fore_sum = 0;
+    double omega_back, omega_fore, micro_back, micro_fore, sigma_b, sigma;
+    int16_t min_value, max_value;
+    uint8_t threshold = 0;
+    uint8_t histogram[256] = {0};
+
+    // Calculate histogram and total pixel count and total intensity
+    for (j = 0; j < c_h; j++) { 
+        for (i = 0; i < c_w; i++) { 
+            histogram[mt9v03x_image_dvp[j][i]]++;
+            pixel_count++;
+            pixel_sum += mt9v03x_image_dvp[j][i];
+        } 
     }
 
-    for (int t = 0; t < 255; ++t) {
+    min_value = 0;
+    while (histogram[min_value] == 0) min_value++;
     
-        int back_pixels = 0;
-        int front_pixels = pixel_total;
+    max_value = 255;
+    while (histogram[max_value] == 0) max_value--;
 
-        double back_omega, front_omega, back_mean, front_mean, inter_var;
+    if (max_value == min_value) return max_value;
+    if (min_value + 1 == max_value) return min_value;
 
-        int back_pixel_integral = 0;
-        for (int i = 0; i <= t; ++i) {
-            back_pixels += histogram[i];
-            back_pixel_integral += histogram[i] * i;
-        }
-
-        front_pixels = pixel_total - back_pixels;
-        int front_pixel_integral = pixel_integral - back_pixel_integral;
-
-        back_omega = (double)back_pixels / pixel_total;
-        front_omega = (double)front_pixels / pixel_total;
-
-        back_mean = (double)back_pixel_integral / back_pixels;  
-        front_mean = (double)front_pixel_integral / front_pixels;
-
-        inter_var = back_omega * front_omega * (back_mean - front_mean) * (back_mean - front_mean);
-
-        if (inter_var > max_inter_var) {
-            max_inter_var = inter_var;
-            threshold = t;
+    sigma_b = -1;
+    for (j = min_value; j < max_value; j++) {
+        
+        pixel_back_count += histogram[j];
+        pixel_back_sum += j * histogram[j];
+        
+        pixel_fore_count = pixel_count - pixel_back_count;
+        pixel_fore_sum = pixel_sum - pixel_back_sum;
+        
+        omega_back = (double)pixel_back_count / pixel_count;
+        omega_fore = (double)pixel_fore_count / pixel_count;
+        
+        micro_back = pixel_back_count ? (double)pixel_back_sum / pixel_back_count : 0.0;
+        micro_fore = pixel_fore_count ? (double)pixel_fore_sum / pixel_fore_count : 0.0;
+        
+        sigma = omega_back * omega_fore * (micro_back - micro_fore) * (micro_back - micro_fore);
+        
+        if (sigma > sigma_b) {
+            sigma_b = sigma;
+            threshold = j;
         }
     }
 
     return threshold;
-}
-
-
-uint8 GetOSTU(){ 
-    int16 i,j; 
-    uint32 Amount = 0; 
-    uint32 PixelBack = 0; 
-    uint32 PixelIntegralBack = 0; 
-    uint32 PixelIntegral = 0; 
-    int32 PixelIntegralFore = 0; 
-    int32 PixelFore = 0; 
-    double OmegaBack, OmegaFore, MicroBack, MicroFore, SigmaB, Sigma; // 类间方差; 
-    int16 MinValue, MaxValue; 
-    uint8 Threshold = 0;
-    uint8 HistoGram[256];              //  
-    
-    for (j = 0; j < 256; j++)  HistoGram[j] = 0; //初始化灰度直方图 
-    
-    for (j = 0; j < MT9V03X_DVP_H; j++) 
-    { 
-        for (i = 0; i < MT9V03X_DVP_W; i++) 
-        { 
-        HistoGram[mt9v03x_image_dvp[j][i]]++; //统计灰度级中每个像素在整幅图像中的个数
-        } 
-    } 
-    
-    for (MinValue = 0; MinValue < 256 && HistoGram[MinValue] == 0; MinValue++) ;        //获取最小灰度的值
-    for (MaxValue = 255; MaxValue > MinValue && HistoGram[MinValue] == 0; MaxValue--) ; //获取最大灰度的值
-        
-    if (MaxValue == MinValue)     return MaxValue;         // 图像中只有一个颜色    
-    if (MinValue + 1 == MaxValue)  return MinValue;        // 图像中只有二个颜色
-        
-    for (j = MinValue; j <= MaxValue; j++)    Amount += HistoGram[j];        //  像素总数
-        
-    PixelIntegral = 0;
-    for (j = MinValue; j <= MaxValue; j++)
-    {
-        PixelIntegral += HistoGram[j] * j;//灰度值总数
-    }
-    SigmaB = -1;
-    for (j = MinValue; j < MaxValue; j++)
-    {
-        PixelBack = PixelBack + HistoGram[j];   //前景像素点数
-        PixelFore = Amount - PixelBack;         //背景像素点数
-        OmegaBack = (double)PixelBack / Amount;//前景像素百分比
-        OmegaFore = (double)PixelFore / Amount;//背景像素百分比
-        PixelIntegralBack += HistoGram[j] * j;  //前景灰度值
-        PixelIntegralFore = PixelIntegral - PixelIntegralBack;//背景灰度值
-        MicroBack = (double)PixelIntegralBack / PixelBack;   //前景灰度百分比
-        MicroFore = (double)PixelIntegralFore / PixelFore;   //背景灰度百分比
-        Sigma = OmegaBack * OmegaFore * (MicroBack - MicroFore) * (MicroBack - MicroFore);//计算类间方差
-        if (Sigma > SigmaB)                    //遍历最大的类间方差g //找出最大类间方差以及对应的阈值
-        {
-        SigmaB = Sigma;
-        Threshold = j;
-        }
-    }
-    return Threshold;                        //返回最佳阈值;
 }
 
 uint8_t get_threshold() {
@@ -213,7 +210,7 @@ uint8_t get_threshold() {
     //     }
     // }
 
-    return GetOSTU();
+    return get_ostu();
     //return get_ostu(histogram, c_h*c_w);
     //return ostu_threshold(histogram, c_h * c_w);
 }

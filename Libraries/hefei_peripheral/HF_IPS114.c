@@ -459,7 +459,7 @@ void ips114_show_gray_image(uint8 threshold) {
         for(i = 0; i < 240; ++i){
             width_index = i * 188 / 240;
             temp = mt9v03x_image_dvp[height_index][width_index];               // ��ȡ���ص�
-            if(temp > 10){
+            if(temp > threshold){
                 ips114_write_16bit_data(RGB565_WHITE);
             }
             else {
