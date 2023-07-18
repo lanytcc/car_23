@@ -95,8 +95,12 @@ int16_t cal_factor(){
 
     int xy[2] = {0};
     cal_center(xy);
+    
     int diff_x = xy[0] - x;
     diff_y = xy[1] - y;
+
+    x = xy[0];
+    y = xy[1];
 
     ans = diff_x;
 
