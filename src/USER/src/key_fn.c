@@ -36,11 +36,11 @@ void key_fn(unsigned char key_value){
             } else if (key_value == 0x05) {
                 if (center_value_status) {
                     center_value_status = 0;
-                    show_left_top_message("white_value_status: off");
+                    show_left_top_message("center_value_status: off");
                 }
                 else {
                     center_value_status = 1;
-                    show_left_top_message("white_value_status: on ");
+                    show_left_top_message("center_value_status: on ");
                 }
             } else if (key_value == 0x06) {
                 // if (flag_show_status) {
