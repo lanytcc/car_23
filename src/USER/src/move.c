@@ -46,26 +46,28 @@ int clamp(int value, int min, int max){
 
 void cal_speeds(int *left_speed, int *right_speed){
 
+    int _x = abs(diff_x);
+    int _y = abs(diff_y);
     if(diff_x > 0){ 
         // x增大,向右倾斜
-        *right_speed = BASE_SPEED + pow(abs(diff_x), 3.0);
-        *left_speed = BASE_SPEED - pow(abs(diff_x), 3.0);
+        *right_speed = BASE_SPEED + _x * _x * _x;
+        *left_speed = BASE_SPEED - _x * _x * _x;
     }
     else if(diff_x < 0){
         // x减小,向左倾斜
-        *left_speed = BASE_SPEED - pow(abs(diff_x), 3.0);
-        *right_speed = BASE_SPEED + pow(abs(diff_x), 3.0);
+        *left_speed = BASE_SPEED - _x * _x * _x;
+        *right_speed = BASE_SPEED + _x * _x * _x;
     }
 
     if(diff_y > 0){
         // y增大
-        *left_speed += pow(abs(diff_y), 2.0);
-        *right_speed += pow(abs(diff_y), 2.0); 
+        *left_speed += _y * _y;
+        *right_speed += _y * _y; 
     }
     else if(diff_y < 0){
         // y减小
-        *left_speed -= pow(abs(diff_y), 2.0);
-        *right_speed -= pow(abs(diff_y), 2.0);
+        *left_speed -= _y * _y;
+        *right_speed -= _y * _y;
     }
 
     // 限制速度范围
