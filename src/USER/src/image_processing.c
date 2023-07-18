@@ -88,7 +88,7 @@ uint8_t otsu_threshold( uint8_t* histogram, int pixel_total ){
         }
         sumB += index_histo * histogram[ index_histo ];
         mF = ( sum1 - sumB ) / wF;
-        inter_var = wB * wF * ( ( sumB / wB ) - mF ) * ( ( sumB / wB ) - mF );
+        inter_var = wB * wF * pow( ( sumB / wB ) - mF, 2);
         if ( inter_var >= max_var ){
             threshold = index_histo;
             max_var = inter_var;
