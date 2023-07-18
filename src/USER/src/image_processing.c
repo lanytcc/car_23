@@ -80,10 +80,50 @@ uint8_t otsu_threshold( uint8_t* histogram, int pixel_total ){
     return threshold;
 }
 
-uint8_t get_threshold() {
-    uint8_t histogram[256];
+uint8_t otsu( uint8_t* histogram, int pixel_total ){
+    uint8_t threshold;
+    //用于计算均值
+    unsigned int sum = 0;
+    //索引buf
+    int index_histo = 0;
 
-    for (int i = 0; i < 256; ++i) histogram[i] = 0;
+    uint32 pixel_back = 0;
+    uint32 pixel_fore = 0;
+    uint32 pixel_integral_back = 0;
+    uint32 pixel_integral_fore = 0;
+    double OmegaBack, OmegaFore, MicroBack, MicroFore, SigmaB = -1, Sigma; // 类间方差; 
+
+    for ( index_histo = 1; index_histo < 256; ++index_histo ){
+        sum += index_histo * histogram[ index_histo ];
+    } 
+
+    for ( index_histo = 1; index_histo < 256; ++index_histo )
+    {
+        pixel_back = pixel_back + histogram[ index_histo ];
+        pixel_fore = pixel_total - pixel_back;
+
+        OmegaBack = pixel_back*1.0 / pixel_total;
+        OmegaFore = pixel_fore*1.0 / pixel_total;
+
+        pixel_integral_back += histogram[ index_histo ] * index_histo;
+        pixel_integral_fore = sum - pixel_integral_back;
+
+        MicroBack = pixel_integral_back*1.0 / pixel_back;
+        MicroFore = pixel_integral_fore*1.0 / pixel_fore;
+
+        Sigma = OmegaBack * OmegaFore * (MicroBack - MicroFore) * (MicroBack - MicroFore);
+        
+        if (Sigma > SigmaB) {
+            SigmaB = Sigma;
+            threshold = index_histo;
+        }
+    }
+    
+    return threshold;
+}
+
+uint8_t get_threshold() {
+    uint8_t histogram[256] = {0};
 
     for (int i = 0; i < c_h; ++i) {
         uint8_t *one_h = mt9v03x_image_dvp[i];
@@ -92,5 +132,6 @@ uint8_t get_threshold() {
         }
     }
 
-    return otsu_threshold(histogram, c_h * c_w);
+    //return otsu_threshold(histogram, c_h * c_w);
+    return otsu(histogram, c_h * c_w);
 }
