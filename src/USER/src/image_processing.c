@@ -1,11 +1,12 @@
 
 
+#include <stdint.h>
+
 #include "image_processing.h"
 
 #include "dis_camera.h"
 #include "message.h"
 #include "HF_Double_DC_Motor.h"
-#include <stdint.h>
 
 
 uint8_t flag_show_status = 0;
@@ -80,14 +81,39 @@ uint8_t otsu_threshold( uint8_t* histogram, int pixel_total ){
     return threshold;
 }
 
+/**
+
+*/
+uint8_t otsu(uint8_t* hist, int min, int max, int ht, int wth){
+
+	double sum = 0.0, mean_bg = 0.0, var_bg = 0.0;
+
+    for (uint8_t i = min; i <= max; ++i) {
+        sum += hist[i];
+        mean_bg += i * hist[i];
+    }
+
+    if (sum != 0.0) {
+        mean_bg /= sum;
+        for (uint8_t j = min; j <= max; ++j) {
+            double diff = j - mean_bg;
+            var_bg += pow(diff, 2) * hist[j];
+        }
+        return (uint8_t) (sum / (ht * wth) * pow(var_bg / sum, 2));
+    }
+
+	return 0;
+}
+
 uint8_t get_threshold() {
     uint8_t histogram[256] = {0};
 
     for (int i = 0; i < c_h; ++i) {
         for (int j = 0; j < c_w; ++j) {
-            histogram[mt9v03x_image_dvp[i][j]]++;
+            ++histogram[mt9v03x_image_dvp[i][j]];
         }
     }
 
+    //return otsu(histogram, 0, 255, c_h, c_w);
     return otsu_threshold(histogram, c_h * c_w);
 }
