@@ -81,10 +81,10 @@ void cal_speeds(int *left_speed, int *right_speed){
         // _cnt = 56;
         motor_forward(left, 9000);
         motor_forward(right, 0);
-        Delay_Ms(900);
+        Delay_Ms(400);
         motor_forward(left, 0);
         motor_forward(right, 9000);
-        Delay_Ms(900);
+        Delay_Ms(400);
     }
     // if(_cnt == 28){
     //     *left_speed = 0;
