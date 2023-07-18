@@ -420,22 +420,22 @@ void ips114_show_binary_image (uint16 x, uint16 y, const uint8 *image, uint16 wi
 // @param       threshold       ��ֵ����ʾ��ֵ 0-��������ֵ��
 // @return      void
 //-------------------------------------------------------------------------------------------------------------------
-void ips114_show_gray_image (uint16 x, uint16 y, uint8_t (*image)[188], uint16 width, uint16 height, uint16 dis_width, uint16 dis_height, uint8 threshold)
+void ips114_show_gray_image (uint8 threshold)
 {
 
     uint32 i = 0, j = 0;
     uint16 color = 0,temp = 0;
     uint32 width_index = 0, height_index = 0;
 
-    ips114_set_region(x, y, x + dis_width - 1, y + dis_height - 1);             // ������ʾ����
+    ips114_set_region(0, 0, 239, 134);             // ������ʾ����
 
-    for(j = 0; j < dis_height; ++j)
+    for(j = 0; j < 135; ++j)
     {
-        height_index = j * height / dis_height;
-        for(i = 0; i < dis_width; ++i)
+        height_index = j * 120 / 135;
+        for(i = 0; i < 135; ++i)
         {
-            width_index = i * width / dis_width;
-            temp = image[height_index][width_index];               // ��ȡ���ص�
+            width_index = i * 188 / 240;
+            temp = mt9v03x_image_dvp[height_index][width_index];               // ��ȡ���ص�
             if(threshold == 0)
             {
                 color = (0x001f & ((temp) >> 3)) << 11;

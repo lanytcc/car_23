@@ -17,11 +17,7 @@ void change_flag(){
 
 void display() {
     if(camera_stauts == ok){ //�ж��Ƿ���ɲ���
-        ips114_show_gray_image(0, 0,
-            mt9v03x_image_dvp,
-            c_w, c_h,
-            d_w, d_h,
-            flag);
+        ips114_show_gray_image(flag);
         frame_cnt += 1;
     }
 }

@@ -11,26 +11,26 @@
 
 #include "headfile.h"
 
-#define IPS114_USE_SOFT_SPI             0                                       // Ä¬ÈÏÊ¹ÓÃÓ²¼þ SPI ·½Ê½Çý¶¯ ½¨ÒéÊ¹ÓÃÓ²¼þ SPI ·½Ê½Çý¶¯
-#if IPS114_USE_SOFT_SPI                                                         // ÕâÁ½¶Î ÑÕÉ«Õý³£µÄ²ÅÊÇÕýÈ·µÄ ÑÕÉ«»ÒµÄ¾ÍÊÇÃ»ÓÐÓÃµÄ
-//====================================================Èí¼þ SPI Çý¶¯====================================================
-#define IPS114_SOFT_SPI_DELAY           1                                       // Èí¼þ SPI µÄÊ±ÖÓÑÓÊ±ÖÜÆÚ ÊýÖµÔ½Ð¡ SPI Í¨ÐÅËÙÂÊÔ½¿ì
-#define IPS114_SCL_PIN                  D4                                      // Èí¼þ SPI SCK Òý½Å
-#define IPS114_SDA_PIN                  D6                                      // Èí¼þ SPI MOSI Òý½Å
-//====================================================Èí¼þ SPI Çý¶¯====================================================
+#define IPS114_USE_SOFT_SPI             0                                       // Ä¬ï¿½ï¿½Ê¹ï¿½ï¿½Ó²ï¿½ï¿½ SPI ï¿½ï¿½Ê½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½Ê¹ï¿½ï¿½Ó²ï¿½ï¿½ SPI ï¿½ï¿½Ê½ï¿½ï¿½ï¿½ï¿½
+#if IPS114_USE_SOFT_SPI                                                         // ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½É«ï¿½ï¿½ï¿½ï¿½ï¿½Ä²ï¿½ï¿½ï¿½ï¿½ï¿½È·ï¿½ï¿½ ï¿½ï¿½É«ï¿½ÒµÄ¾ï¿½ï¿½ï¿½Ã»ï¿½ï¿½ï¿½Ãµï¿½
+//====================================================ï¿½ï¿½ï¿½ï¿½ SPI ï¿½ï¿½ï¿½ï¿½====================================================
+#define IPS114_SOFT_SPI_DELAY           1                                       // ï¿½ï¿½ï¿½ï¿½ SPI ï¿½ï¿½Ê±ï¿½ï¿½ï¿½ï¿½Ê±ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ÖµÔ½Ð¡ SPI Í¨ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ô½ï¿½ï¿½
+#define IPS114_SCL_PIN                  D4                                      // ï¿½ï¿½ï¿½ï¿½ SPI SCK ï¿½ï¿½ï¿½ï¿½
+#define IPS114_SDA_PIN                  D6                                      // ï¿½ï¿½ï¿½ï¿½ SPI MOSI ï¿½ï¿½ï¿½ï¿½
+//====================================================ï¿½ï¿½ï¿½ï¿½ SPI ï¿½ï¿½ï¿½ï¿½====================================================
 #else
-//====================================================Ó²¼þ SPI Çý¶¯====================================================
-#define IPS114_SPI_SPEED                SystemCoreClock                         // Ó²¼þ SPI ËÙÂÊ
-#define IPS114_SPI                      SPI_2                                   // Ó²¼þ SPI ºÅ
-#define IPS114_SCL_PIN                  SPI2_SCK_B13                            // Ó²¼þ SPI SCK Òý½Å
-#define IPS114_SDA_PIN                  SPI2_MOSI_B15                           // Ó²¼þ SPI MOSI Òý½Å
-//====================================================Ó²¼þ SPI Çý¶¯====================================================
+//====================================================Ó²ï¿½ï¿½ SPI ï¿½ï¿½ï¿½ï¿½====================================================
+#define IPS114_SPI_SPEED                SystemCoreClock                         // Ó²ï¿½ï¿½ SPI ï¿½ï¿½ï¿½ï¿½
+#define IPS114_SPI                      SPI_2                                   // Ó²ï¿½ï¿½ SPI ï¿½ï¿½
+#define IPS114_SCL_PIN                  SPI2_SCK_B13                            // Ó²ï¿½ï¿½ SPI SCK ï¿½ï¿½ï¿½ï¿½
+#define IPS114_SDA_PIN                  SPI2_MOSI_B15                           // Ó²ï¿½ï¿½ SPI MOSI ï¿½ï¿½ï¿½ï¿½
+//====================================================Ó²ï¿½ï¿½ SPI ï¿½ï¿½ï¿½ï¿½====================================================
 #endif
 
-#define IPS114_RST_PIN                  B7                                      // Òº¾§¸´Î»Òý½Å¶¨Òå
-#define IPS114_DC_PIN                   D7                                      // Òº¾§ÃüÁîÎ»Òý½Å¶¨Òå
-#define IPS114_CS_PIN                   D4                                      // CS Æ¬Ñ¡Òý½Å
-#define IPS114_BLK_PIN                  D0                                      // Òº¾§±³¹âÒý½Å¶¨Òå
+#define IPS114_RST_PIN                  B7                                      // Òºï¿½ï¿½ï¿½ï¿½Î»ï¿½ï¿½ï¿½Å¶ï¿½ï¿½ï¿½
+#define IPS114_DC_PIN                   D7                                      // Òºï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Î»ï¿½ï¿½ï¿½Å¶ï¿½ï¿½ï¿½
+#define IPS114_CS_PIN                   D4                                      // CS Æ¬Ñ¡ï¿½ï¿½ï¿½ï¿½
+#define IPS114_BLK_PIN                  D0                                      // Òºï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Å¶ï¿½ï¿½ï¿½
 
 #define IPS114_DC(x)                    (x? (gpio_high(IPS114_DC_PIN)): (gpio_low(IPS114_DC_PIN)))
 #define IPS114_RST(x)                   (x? (gpio_high(IPS114_RST_PIN)): (gpio_low(IPS114_RST_PIN)))
@@ -39,15 +39,15 @@
 
 typedef enum
 {
-    IPS114_PORTAIT                      = 0,                                    // ÊúÆÁÄ£Ê½
-    IPS114_PORTAIT_180                  = 1,                                    // ÊúÆÁÄ£Ê½  Ðý×ª180
-    IPS114_CROSSWISE                    = 2,                                    // ºáÆÁÄ£Ê½
-    IPS114_CROSSWISE_180                = 3,                                    // ºáÆÁÄ£Ê½  Ðý×ª180
+    IPS114_PORTAIT                      = 0,                                    // ï¿½ï¿½ï¿½ï¿½Ä£Ê½
+    IPS114_PORTAIT_180                  = 1,                                    // ï¿½ï¿½ï¿½ï¿½Ä£Ê½  ï¿½ï¿½×ª180
+    IPS114_CROSSWISE                    = 2,                                    // ï¿½ï¿½ï¿½ï¿½Ä£Ê½
+    IPS114_CROSSWISE_180                = 3,                                    // ï¿½ï¿½ï¿½ï¿½Ä£Ê½  ï¿½ï¿½×ª180
 }ips114_dir_enum;
 
-#define IPS114_DEFAULT_DISPLAY_DIR      (IPS114_CROSSWISE)                  // Ä¬ÈÏµÄÏÔÊ¾·½Ïò
-#define IPS114_DEFAULT_PENCOLOR         (RGB565_RED)                            // Ä¬ÈÏµÄ»­±ÊÑÕÉ«
-#define IPS114_DEFAULT_BGCOLOR          (RGB565_WHITE)                          // Ä¬ÈÏµÄ±³¾°ÑÕÉ«
+#define IPS114_DEFAULT_DISPLAY_DIR      (IPS114_CROSSWISE)                  // Ä¬ï¿½Ïµï¿½ï¿½ï¿½Ê¾ï¿½ï¿½ï¿½ï¿½
+#define IPS114_DEFAULT_PENCOLOR         (RGB565_RED)                            // Ä¬ï¿½ÏµÄ»ï¿½ï¿½ï¿½ï¿½ï¿½É«
+#define IPS114_DEFAULT_BGCOLOR          (RGB565_WHITE)                          // Ä¬ï¿½ÏµÄ±ï¿½ï¿½ï¿½ï¿½ï¿½É«
 
 void    ips114_clear                    (void);
 void    ips114_full                     (const uint16 color);
@@ -63,7 +63,7 @@ void    ips114_show_uint                (uint16 x,uint16 y, const uint32 dat, ui
 void    ips114_show_float               (uint16 x,uint16 y, const float dat, uint8 num, uint8 pointnum);
 
 void    ips114_show_binary_image        (uint16 x, uint16 y, const uint8 *image, uint16 width, uint16 height, uint16 dis_width, uint16 dis_height);
-void    ips114_show_gray_image          (uint16 x, uint16 y, uint8_t (*image)[188], uint16 width, uint16 height, uint16 dis_width, uint16 dis_height, uint8 threshold);
+void    ips114_show_gray_image          (uint8 threshold);
 void    ips114_show_rgb565_image        (uint16 x, uint16 y, const uint16 *image, uint16 width, uint16 height, uint16 dis_width, uint16 dis_height, uint8 color_mode);
 
 void    ips114_show_wave                (uint16 x, uint16 y, const uint16 *wave, uint16 width, uint16 value_max, uint16 dis_width, uint16 dis_value_max);

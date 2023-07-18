@@ -68,7 +68,7 @@ uint8_t otsu_threshold( uint8_t* histogram, int pixel_total ){
         }
     }
 
-    threshold = threshold_avg(threshold);
+    //threshold = threshold_avg(threshold);
 
     if(flag_show_status){
         sprintf(buf, " %d ", threshold);
@@ -79,7 +79,7 @@ uint8_t otsu_threshold( uint8_t* histogram, int pixel_total ){
 }
 
 uint8_t get_threshold() {
-    uint8_t histogram[256];
+    uint8_t histogram[256] = {0};
 
     for (int i = 0; i < c_h; ++i) {
         uint8_t *one_h = mt9v03x_image_dvp[i];
