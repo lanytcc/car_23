@@ -7,13 +7,14 @@
 #include <stdint.h>
 #include <stdlib.h>
 
-int _speed = 4000;
+#define BASE_SPEED 5000 
+#define MAX_SPEED 10000
 
 uint8_t speed_show = 0;
 void car_move(int16_t f){
 
-    int left_speed = _speed - (f * 100);
-    int right_speed = _speed + (f * 100);
+    int left_speed = BASE_SPEED - (f * 100);
+    int right_speed = BASE_SPEED + (f * 100);
 
     if (speed_show) {
         sprintf(buf, " %d|%d|%d ", f, left_speed, right_speed);
@@ -36,9 +37,6 @@ void car_move(int16_t f){
     motor_forward(right, right_speed);
 }
 
-#define BASE_SPEED 5000 
-#define MAX_SPEED 10000
-
 int clamp(int value, int min, int max){
     if(value < min) return min;
     if(value > max) return max;
@@ -59,13 +57,13 @@ void cal_speeds(int *left_speed, int *right_speed){
 
     if(dis_x > 0){ 
         // x增大,向右倾斜
-        *right_speed = BASE_SPEED + _x * 100;
-        *left_speed = BASE_SPEED - _x * 100;
+        *right_speed = BASE_SPEED - _x * 100;
+        *left_speed = BASE_SPEED + _x * 100;
     }
     else if(dis_x < 0){
         // x减小,向左倾斜
-        *left_speed = BASE_SPEED - _x * 100;
-        *right_speed = BASE_SPEED + _x * 100;
+        *left_speed = BASE_SPEED + _x * 100;
+        *right_speed = BASE_SPEED - _x * 100;
     }
 
     if(dis_y > 0){
