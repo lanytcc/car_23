@@ -7,8 +7,8 @@ int _speed = 4000;
 uint8_t speed_show = 0;
 void car_move(int16_t f){
 
-    int left_speed = _speed - (f * 300);
-    int right_speed = _speed + (f * 300);
+    int left_speed = _speed - (f * 100);
+    int right_speed = _speed + (f * 100);
 
     if (speed_show) {
         sprintf(buf, " %d|%d|%d ", f, left_speed, right_speed);
@@ -20,6 +20,12 @@ void car_move(int16_t f){
     }
     if(right_speed < 0){
         right_speed = 0;
+    }
+    if(left_speed > 10000){
+        left_speed = 10000;
+    }
+    if(right_speed > 10000){
+        right_speed = 10000;
     }
     motor_forward(left, left_speed);
     motor_forward(right, right_speed);
