@@ -66,16 +66,15 @@ void cal_speeds(int *left_speed, int *right_speed){
         *right_speed = BASE_SPEED + _x * 100;
     }
 
-    if(dis_y > 0){
+    if(_x < 5 && dis_y > 20){
         // y增大
-        *left_speed += _y * _y * 5;
-        *right_speed += _y * _y * 5; 
+        *left_speed = 9000;
     }
-    else if(dis_y < 0){
-        // y减小
-        *left_speed -= _y * _y * 5;
-        *right_speed -= _y * _y * 5;
-    }
+    // else if(dis_y < 0){
+    //     // y减小
+    //     *left_speed -= _y * _y * 5;
+    //     *right_speed -= _y * _y * 5;
+    // }
 
     // 限制速度范围
     *left_speed = clamp(*left_speed, 0, MAX_SPEED);
