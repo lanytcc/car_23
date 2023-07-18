@@ -1,12 +1,12 @@
 #include "headfile.h"
 #include "move.h"
 
-int _speed = 5000;
+int _speed = 3000;
 
 void car_move(int16_t f){
 
-    int left_speed = _speed - f * 30;
-    int right_speed = _speed + f * 30;
+    int left_speed = _speed - f * 10;
+    int right_speed = _speed + f * 10;
     if(left_speed < 0){
         left_speed = 0;
     }
