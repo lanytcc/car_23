@@ -1,3 +1,4 @@
+#include "delay.h"
 #include "headfile.h"
 #include "move.h"
 #include "dis_camera.h"
@@ -47,7 +48,7 @@ static uint8_t last_x = 94;
 static uint8_t last_y = 60;
 static uint8_t _cnt = 0;
 #define _k 120
-#define _d 90
+#define _d 98
 void cal_speeds(int *left_speed, int *right_speed){
 
     int _x = abs(dis_x);
@@ -69,23 +70,26 @@ void cal_speeds(int *left_speed, int *right_speed){
         *right_speed = BASE_SPEED + _x * _k + diff_x * _d;
     }
 
-    if(_cnt == 0 && _x < 6 && dis_y > 9 && dis_y < 15){
-        *left_speed -= 1500;
-        *right_speed -= 1500;
-    }
+    // if(_cnt == 0 && _x < 6 && dis_y > 9 && dis_y < 15){
+    //     *left_speed -= 1500;
+    //     *right_speed -= 1500;
+    // }
 
-    if(_cnt == 0 && _x < 6 && dis_y >= 15){
-        *left_speed = 10000;
-        *right_speed = 0;
-        _cnt = 56;
+    if(_cnt == 0 && _x < 6 && dis_y >= 14){
+        // *left_speed = 10000;
+        // *right_speed = 0;
+        // _cnt = 56;
+        motor_forward(left, 0);
+        motor_forward(right, 0);
+        Delay_Ms(2000);
     }
-    if(_cnt == 28){
-        *left_speed = 0;
-        *right_speed = 10000;
-    }
-    if(_cnt != 0) {
-        --_cnt;
-    }
+    // if(_cnt == 28){
+    //     *left_speed = 0;
+    //     *right_speed = 10000;
+    // }
+    // if(_cnt != 0) {
+    //     --_cnt;
+    // }
 
     // 限制速度范围
     *left_speed = clamp(*left_speed, 0, MAX_SPEED);
