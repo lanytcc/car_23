@@ -79,7 +79,7 @@ void cal_speeds(int *left_speed, int *right_speed){
         // *left_speed = 10000;
         // *right_speed = 0;
         // _cnt = 56;
-        motor_forward(left, 5000);
+        motor_forward(left, 6000);
         motor_forward(right, 2000);
         Delay_Ms(400);
         motor_forward(left, 3000);
