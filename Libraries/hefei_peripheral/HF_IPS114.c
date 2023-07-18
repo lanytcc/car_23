@@ -448,7 +448,7 @@ void ips114_show_gray_image(uint8 threshold) {
         return;
     }
 
-    uint16 i = 0, j = 0;
+    int i = 0, j = 0;
     uint16 _b = 0,temp = 0;
     uint16 width_index = 0, height_index = 0;
 
