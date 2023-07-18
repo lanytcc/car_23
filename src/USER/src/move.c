@@ -64,7 +64,7 @@ void cal_speeds(int *left_speed, int *right_speed){
     else if(_cnt == 0 && dis_x < 0){
         // x减小,向左倾斜
         *left_speed = BASE_SPEED - _x * 100 + diff_x * 100;
-        *right_speed = BASE_SPEED + _x * 100 - diff_x * 100;
+        *right_speed = BASE_SPEED + _x * 100 + diff_y * 100;
     }
 
     if(_cnt == 0 && _x < 6 && dis_y > 16){
