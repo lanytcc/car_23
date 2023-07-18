@@ -51,9 +51,7 @@ double otsu(uint8_t* hist, int min, int max, int ht, int wth){
 
 /**
 *args:
-*
 *histogram：长度为256的整型数组，表示图像中0~255出现的像素值的个数。
-*
 *pixel_total：整型变量，表示图像中像素的总数。
 *
 *https://www.ipol.im/pub/art/2016/158/article_lr.pdf
