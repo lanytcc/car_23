@@ -41,8 +41,8 @@ int main() {
         key_value = key_check();
 
         camera_check();
+        //change_flag();
         if(display_status)display();
-        change_flag();
         factor = cal_factor();
         car_move(factor);
         sample();
