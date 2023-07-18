@@ -26,6 +26,30 @@ uint8_t threshold_avg(uint8_t threshold){
 }
 
 /**
+直接计算类间方差,没有遍历所有阈值,需要提前指定阈值的范围(min到max)。
+*/
+double otsu(uint8_t* hist, int min, int max, int ht, int wth){
+
+	double sum = 0.0, mean_bg = 0.0, var_bg = 0.0;
+
+    for (uint8_t i = min; i <= max; ++i) {
+        sum += hist[i];
+        mean_bg += i * hist[i];
+    }
+
+    if (sum != 0.0) {
+        mean_bg /= sum;
+        for (uint8_t j = min; j <= max; ++j) {
+            double diff = j - mean_bg;
+            var_bg += pow(diff, 2) * hist[j];
+        }
+        return sum / (ht * wth) * pow(var_bg / sum, 2);
+    }
+
+	return 0;
+}
+
+/**
 *args:
 *
 *histogram：长度为256的整型数组，表示图像中0~255出现的像素值的个数。
@@ -81,29 +105,7 @@ uint8_t otsu_threshold( uint8_t* histogram, int pixel_total ){
     return threshold;
 }
 
-/**
 
-*/
-uint8_t otsu(uint8_t* hist, int min, int max, int ht, int wth){
-
-	double sum = 0.0, mean_bg = 0.0, var_bg = 0.0;
-
-    for (uint8_t i = min; i <= max; ++i) {
-        sum += hist[i];
-        mean_bg += i * hist[i];
-    }
-
-    if (sum != 0.0) {
-        mean_bg /= sum;
-        for (uint8_t j = min; j <= max; ++j) {
-            double diff = j - mean_bg;
-            var_bg += pow(diff, 2) * hist[j];
-        }
-        return (uint8_t) (sum / (ht * wth) * pow(var_bg / sum, 2));
-    }
-
-	return 0;
-}
 
 uint8_t get_threshold() {
     uint8_t histogram[256] = {0};
