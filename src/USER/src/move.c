@@ -50,24 +50,24 @@ void cal_speeds(int *left_speed, int *right_speed){
     int _y = abs(diff_y);
     if(diff_x > 0){ 
         // x增大,向右倾斜
-        *right_speed = BASE_SPEED + _x * 300;
-        *left_speed = BASE_SPEED - _x * 300;
+        *right_speed = BASE_SPEED + _x * 600;
+        *left_speed = BASE_SPEED - _x * 600;
     }
     else if(diff_x < 0){
         // x减小,向左倾斜
-        *left_speed = BASE_SPEED - _x * 300;
-        *right_speed = BASE_SPEED + _x * 300;
+        *left_speed = BASE_SPEED - _x * 600;
+        *right_speed = BASE_SPEED + _x * 600;
     }
 
     if(diff_y > 0){
         // y增大
-        *left_speed += _y * _y;
-        *right_speed += _y * _y; 
+        *left_speed += _y * _y * 5;
+        *right_speed += _y * _y * 5; 
     }
     else if(diff_y < 0){
         // y减小
-        *left_speed -= _y * _y;
-        *right_speed -= _y * _y;
+        *left_speed -= _y * _y * 5;
+        *right_speed -= _y * _y * 5;
     }
 
     // 限制速度范围
