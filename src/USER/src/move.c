@@ -2,13 +2,13 @@
 #include "move.h"
 #include "message.h"
 
-int _speed = 3000;
+int _speed = 5000;
 
 uint8_t speed_show = 0;
 void car_move(int16_t f){
 
-    int left_speed = _speed - f * 10;
-    int right_speed = _speed + f * 10;
+    int left_speed = _speed - f * 30;
+    int right_speed = _speed + f * 30;
 
     if (speed_show) {
         sprintf(buf, " %d|%d ", left_speed, right_speed);

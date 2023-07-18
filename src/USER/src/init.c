@@ -8,8 +8,8 @@ void init() {
     Delay_Init();
 
     ips114_init();     
-    show_message("car_23-Maye", 0);
-    show_message("version:0.3.5.5  f=30", 0);
+    show_message("--car_23-Maye--", 0);
+    show_message("version:0.3.5.6", 0);
     show_message("init_begin...", 0);
     Delay_Ms(2000);
 
