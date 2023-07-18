@@ -26,7 +26,7 @@ int main() {
     int ms_new;
     uint16_t s_cnt = 0;
 
-    int8_t factor = 0;
+    int16_t factor = 0;
 
     while(1) {
 
