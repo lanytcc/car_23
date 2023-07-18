@@ -91,7 +91,7 @@ void car_move_calculus(){
     cal_speeds(&left_speed, &right_speed);
 
     if (speed_show) {
-        sprintf(buf, " %d|%d|%d ", dis_x, left_speed, right_speed);
+        sprintf(buf, " %d|%d|%d|%d ", dis_x, dis_y, left_speed, right_speed);
         show_right_top_message(buf);
     }
     motor_forward(left, left_speed);
