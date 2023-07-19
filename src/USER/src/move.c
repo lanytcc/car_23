@@ -30,26 +30,19 @@ void cal_speeds(int *left_speed, int *right_speed){
     last_x = _x;
     last_y = _y;
 
-    if(/*_cnt == 0 && */ dis_x > 0){ 
+    if(dis_x > 0){ 
         // x增大,向右倾斜
         *left_speed = BASE_SPEED + _x * _k + diff_x * _d;
         *right_speed = BASE_SPEED - _x * _k + diff_x * _d;
     }
-    else if(/*_cnt == 0 && */ dis_x < 0){
+    else if(dis_x < 0){
         // x减小,向左倾斜
         *left_speed = BASE_SPEED - _x * _k + diff_x * _d;
         *right_speed = BASE_SPEED + _x * _k + diff_x * _d;
     }
 
-    // if(_cnt == 0 && _x < 6 && dis_y > 9 && dis_y < 15){
-    //     *left_speed -= 1500;
-    //     *right_speed -= 1500;
-    // }
 
-    if(/*_cnt == 0 && */_x < 6 && dis_y >= 12){
-        // *left_speed = 10000;
-        // *right_speed = 0;
-        // _cnt = 56;
+    if(_x < 6 && dis_y >= 12){
         motor_forward(left, 6000);
         motor_forward(right, 2000);
         Delay_Ms(400);
@@ -58,15 +51,8 @@ void cal_speeds(int *left_speed, int *right_speed){
         Delay_Ms(500);
         motor_forward(left, 2000);
         motor_forward(right, 5000);
-        Delay_Ms(550);
+        Delay_Ms(450);
     }
-    // if(_cnt == 28){
-    //     *left_speed = 0;
-    //     *right_speed = 10000;
-    // }
-    // if(_cnt != 0) {
-    //     --_cnt;
-    // }
 
     // 限制速度范围
     *left_speed = clamp(*left_speed, 0, MAX_SPEED);
@@ -95,6 +81,7 @@ void car_move_calculus(){
 void identify_garage(){
     uint8_t *one_line = mt9v03x_image_dvp[midline];
     uint8_t is_w = 1, b_cnt = 0, _buf, _b;
+    _b = 0;
 
     for (int i = 0; i < c_w; ++i) {
         _buf = binarization_point(one_line[i]);
