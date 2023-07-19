@@ -12,31 +12,6 @@
 #define MAX_SPEED 10000
 
 uint8_t speed_show = 0;
-void car_move(int16_t f){
-
-    int left_speed = BASE_SPEED - (f * 100);
-    int right_speed = BASE_SPEED + (f * 100);
-
-    if (speed_show) {
-        sprintf(buf, " %d|%d|%d ", f, left_speed, right_speed);
-        show_right_top_message(buf);
-    }
-
-    if(left_speed < 0){
-        left_speed = 0;
-    }
-    if(right_speed < 0){
-        right_speed = 0;
-    }
-    if(left_speed > 10000){
-        left_speed = 10000;
-    }
-    if(right_speed > 10000){
-        right_speed = 10000;
-    }
-    motor_forward(left, left_speed);
-    motor_forward(right, right_speed);
-}
 
 int clamp(int value, int min, int max){
     if(value < min) return min;
@@ -46,7 +21,7 @@ int clamp(int value, int min, int max){
 
 static uint8_t last_x = 0;
 static uint8_t last_y = 0;
-static uint8_t _cnt = 0;
+//static uint8_t _cnt = 0;
 #define _k 100
 #define _d 160
 void cal_speeds(int *left_speed, int *right_speed){
@@ -136,6 +111,8 @@ void identify_garage(){
     }
 
     if(b_cnt > 6){
+        motor_forward(left, 0);
+        motor_forward(right, 0);
         Delay_Ms(2000);
     }
 }

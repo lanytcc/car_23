@@ -10,6 +10,8 @@
 
 
 uint8_t flag_show_status = 0;
+
+
 #define  _avg_fre 4
 static uint8_t _threshold_avg[_avg_fre] = {0};
 static uint8_t _pos = 0;
