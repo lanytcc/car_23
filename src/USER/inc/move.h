@@ -8,5 +8,6 @@ extern uint8_t speed_show;
 
 void car_move(int16_t f);
 void car_move_calculus();
+void identify_garage();
 
 #endif

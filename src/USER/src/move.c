@@ -44,8 +44,8 @@ int clamp(int value, int min, int max){
     return value;
 }
 
-static uint8_t last_x = 94;
-static uint8_t last_y = 60;
+static uint8_t last_x = 0;
+static uint8_t last_y = 0;
 static uint8_t _cnt = 0;
 #define _k 100
 #define _d 160
@@ -117,4 +117,25 @@ void car_move_calculus(){
     motor_forward(left, left_speed);
     motor_forward(right, right_speed);
 
+}
+
+
+#define midline 59
+void identify_garage(){
+    uint8_t *one_line = mt9v03x_image_dvp[midline];
+    uint8_t is_w = 1, b_cnt = 0, _buf, _b;
+
+    for (int i = 0; i < c_w; ++i) {
+        _buf = binarization_point(one_line[i]);
+        if (is_w == 1 && _buf == 0) {
+            is_w = 0;
+            ++b_cnt;
+        } else if (_buf == 1) {
+            is_w = 1;
+        }
+    }
+
+    if(b_cnt > 6){
+        Delay_Ms(2000);
+    }
 }

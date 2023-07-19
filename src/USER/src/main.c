@@ -19,14 +19,13 @@ int main() {
     init();
 
     unsigned char key_value;
+    uint8_t frame_show = 0;
     uint16_t frame = 30;
     uint16_t frame_time = 1000/frame;
-    uint8_t frame_show = 0;
     int ms;
     int ms_new;
     uint16_t s_cnt = 0;
-
-    int16_t factor = 0;
+    //int16_t factor = 0;
 
     while(1) {
 
@@ -42,9 +41,13 @@ int main() {
 
         camera_check();
         change_flag();
+
         if(display_status)display();
-        factor = cal_factor();
+
+        /*factor = */cal_factor();
         car_move_calculus();
+        identify_garage();
+
         sample();
 
         ms_new = get_time();
