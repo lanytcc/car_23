@@ -5,7 +5,7 @@
 #include "message.h"
 
 
-#define BASE_SPEED 5500 
+#define BASE_SPEED 5500
 #define MAX_SPEED 10000
 
 uint8_t speed_show = 0;
@@ -22,8 +22,8 @@ static uint8_t last_y = 0;
 #define _d 160
 void cal_speeds(int *left_speed, int *right_speed){
 
-    int _x = abs(dis_x);
-    int _y = abs(dis_y);
+    int _x = dis_x < 0? -dis_x: dis_x;
+    int _y = dis_y < 0? -dis_y: dis_y;
     int diff_x = _x - last_x;
     //int diff_y = _y - last_y;
 
