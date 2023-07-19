@@ -49,9 +49,9 @@ void cal_speeds(int *left_speed, int *right_speed){
         motor_forward(left, 3000);
         motor_forward(right, 4000);
         Delay_Ms(500);
-        motor_forward(left, 2000);
+        motor_forward(left, 3000);
         motor_forward(right, 5000);
-        Delay_Ms(450);
+        Delay_Ms(330);
     }
 
     // 限制速度范围
