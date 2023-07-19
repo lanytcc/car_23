@@ -4,9 +4,6 @@
 #include "dis_camera.h"
 #include "message.h"
 
-#include <math.h>
-#include <stdint.h>
-#include <stdlib.h>
 
 #define BASE_SPEED 5500 
 #define MAX_SPEED 10000
@@ -21,7 +18,6 @@ int clamp(int value, int min, int max){
 
 static uint8_t last_x = 0;
 static uint8_t last_y = 0;
-//static uint8_t _cnt = 0;
 #define _k 100
 #define _d 160
 void cal_speeds(int *left_speed, int *right_speed){
@@ -29,7 +25,7 @@ void cal_speeds(int *left_speed, int *right_speed){
     int _x = abs(dis_x);
     int _y = abs(dis_y);
     int diff_x = _x - last_x;
-    int diff_y = _y - last_y;
+    //int diff_y = _y - last_y;
 
     last_x = _x;
     last_y = _y;
