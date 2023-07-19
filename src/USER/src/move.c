@@ -100,6 +100,8 @@ void identify_garage(){
         motor_forward(left, 8000);
         motor_forward(right, 2000);
         Delay_Ms(400);
+        motor_forward(left, 0);
+        motor_forward(right, 0);
         show_left_top_message("Finish the game, please restart");
         while (1) {
             Delay_Ms(100);
