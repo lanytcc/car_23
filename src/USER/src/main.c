@@ -26,7 +26,10 @@ int main() {
     int ms_new;
     uint16_t s_cnt = 0;
     //int16_t factor = 0;
-
+    motor_forward(left, 6000);
+    motor_forward(right, 4000);
+    Delay_Ms(400);
+    
     while(1) {
 
 
@@ -47,6 +50,7 @@ int main() {
         /*factor = */cal_factor();
         car_move_calculus();
         identify_garage();
+        island();
 
         sample();
 

@@ -48,7 +48,7 @@ void cal_speeds(int *left_speed, int *right_speed){
         Delay_Ms(400);
         motor_forward(left, 3000);
         motor_forward(right, 5000);
-        Delay_Ms(1400);
+        Delay_Ms(1500);
         // motor_forward(left, 3000);
         // motor_forward(right, 5000);
         // Delay_Ms(480);
@@ -112,5 +112,27 @@ void identify_garage(){
         while (1) {
             Delay_Ms(100);
         }
+    }
+}
+
+
+void island(){
+    uint8_t *one_line1 = mt9v03x_image_dvp[0];
+    uint8_t *one_line2 = mt9v03x_image_dvp[c_h - 1];
+
+    uint8_t cnt1 = 0, cnt2 = 0;
+    for (int i = 0; i < c_w; ++i) {
+        if (binarization_point(one_line1[i]) == 0) {
+            ++cnt1;
+        }
+        if (binarization_point(one_line2[i]) == 0) {
+            ++cnt2;
+        }
+    }
+
+    if(cnt1 >= 5 && cnt2 >= 5){
+        motor_forward(left, 6000);
+        motor_forward(right, 4000);
+        Delay_Ms(200);
     }
 }
