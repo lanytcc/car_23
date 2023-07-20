@@ -25,6 +25,7 @@ int main() {
     int ms;
     int ms_new;
     uint16_t s_cnt = 0;
+    uint16_t land_cnt = 0;
     //int16_t factor = 0;
     motor_forward(left, 6000);
     motor_forward(right, 4000);
@@ -40,6 +41,7 @@ int main() {
             show_left_bottom_message(buf);
         }
 
+        if(land_cnt < 400)++land_cnt;
         key_value = key_check();
 
         camera_check();
@@ -50,7 +52,7 @@ int main() {
         /*factor = */cal_factor();
         car_move_calculus();
         identify_garage();
-        island();
+        if(land_cnt >= 400)island();
 
         sample();
 
