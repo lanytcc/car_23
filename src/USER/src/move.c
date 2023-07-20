@@ -121,7 +121,7 @@ void island(){
     uint8_t *one_line2 = mt9v03x_image_dvp[c_h - 1];
 
     uint8_t cnt1 = 0, cnt2 = 0;
-    for (int i = 0; i < c_w; ++i) {
+    for (int i = 20; i < c_w - 20; ++i) {
         if (binarization_point(one_line1[i]) == 0) {
             ++cnt1;
         }
@@ -130,7 +130,7 @@ void island(){
         }
     }
 
-    if(cnt1 >= 5 && cnt2 >= 5){
+    if(cnt1 >= 6 && cnt2 >= 6){
         motor_forward(left, 6000);
         motor_forward(right, 4000);
         Delay_Ms(200);
